@@ -1,7 +1,7 @@
 /*
  * lowstruct — parser for the lowstruct configuration format (.lows).
  *
- * The format is defined by docs/spec/lowstruct.md. This library is C23 on top of
+ * The format is defined by spec/lowstruct.md. This library is C23 on top of
  * proven_c_lib: errors are values, every allocation goes through the caller's
  * proven_allocator_t, and a parsed document owns all of its memory.
  *

@@ -4,7 +4,7 @@
 //   const doc = parse('server do\n  port 8080 .\nend\n');
 //   doc.lookup("server port").one();   // 8080n
 //
-// The format is defined by docs/spec/lowstruct.md. Values keep their literal kind:
+// The format is defined by spec/lowstruct.md. Values keep their literal kind:
 //   int       BigInt (-2^63 .. 2^64-1)      float   Number (finite)     bool  Boolean
 //   str       Uint8Array (a "..." literal is a byte string; Leaf.text() gives UTF-8 text)
 //   u_str     Array of UTF-16 code units    U_str   Array of code points

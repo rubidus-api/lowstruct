@@ -1,0 +1,7 @@
+# Text files use LF in the repository.
+* text=auto eol=lf
+
+# Conformance cases are byte-exact: CRLF, lone CR, BOM, NUL and invalid UTF-8 are what they test.
+conformance/** -text
+*.lows -text
+*.dump -text

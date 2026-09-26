@@ -1,12 +1,15 @@
 # lowstruct
 
-A small, strict configuration file format (`.lows`) that borrows the surface syntax of the
-Lowent language, with three independent parsers — C, Node.js and Python — held to one
-conformance suite.
+**English** · [한국어](README-ko.md)
 
-```lowent
+A small, strict configuration file format (`.lows`), with three independent parsers — **C**, **Node.js** and
+**Python** — held to one conformance suite.
+
+> This English README is the canonical version; the Korean one is its translation.
+
+```lowstruct
 rem server settings
-title "rubrapack" .
+title "my-app" .
 
 server do
   host "0.0.0.0" .
@@ -19,39 +22,80 @@ end
 windir "C:\\Windows" .
 ```
 
-- A statement is **names (the path) + literals (the values) + `.`** — no `=`, no brackets, no commas.
-- `do … end` groups a common prefix; a path written as a block has exactly one writer.
-- Backslashes mean only what the closed escape set says; raw multi-line text goes in a `text TAG … TAG` heredoc.
-- Literals are exactly Lowent's: `0x2A`, `0b101`, `1_000`, `0x1.8p1`, `'a'`, `u"…"` (UTF-16), `U"…"` (code points).
-- No octal, no `inf`/`nan`, no BOM, UTF-8 only. Every rejection has a stable code (`E-LOWS-…`) and a line:column.
+## Why
 
-lowstruct shares its syntax with Lowent but is a **separate project**: its own specification, versions and
-diagnostics. It is not a Lowent component, a `.lows` file is not a Lowent program, and none of the libraries needs
-Lowent. The literals were pinned to Lowent's as of language revision 1.3; later Lowent changes are adopted, if at
-all, only through a new lowstruct version.
+- **Nothing is guessed.** A statement is names, then values, then a full stop — no `=`, no brackets, no commas.
+  Every value keeps its literal kind (`int`, `float`, `bool`, byte string, …); a key is written exactly once.
+- **Backslashes mean one thing.** The escape set is closed, so `"\q"` is an error, never a surprise. Raw
+  multi-line text goes in a `text TAG … TAG` heredoc.
+- **Errors are precise.** Every rejection has a stable code (`E-LOWS-…`), a line, and a column in characters.
+  The three libraries report the same code at the same position.
+- **Small on purpose.** No `null`, no dates, no octal, no `inf`/`nan`, no BOM, UTF-8 only.
 
 ## What is here
 
-| Path | What |
+| Path | Contents |
 |---|---|
-| `docs/spec/lowstruct.md` | the specification, version 0.1 (Korean) — normative |
-| `conformance/` | accept cases with their canonical dumps, reject cases with their expected codes |
-| `c/` | C23 library on proven_c_lib (vendored) |
-| `js/` | Node.js ES module, no dependencies |
-| `python/` | Python 3.10+ package, no dependencies |
+| [`spec/`](spec/lowstruct.md) | the specification, version 0.1 — English is normative, Korean is a translation |
+| [`manual/`](manual/README.md) · [`manual-ko/`](manual-ko/README.md) | the manual: writing files, the three libraries, notes for implementers |
+| [`conformance/`](manual/implementers.md) | accept cases with their canonical dumps, reject cases with their expected codes |
+| [`python/`](manual/python.md) | Python 3.10+ package, no dependencies |
+| [`js/`](manual/javascript.md) | Node.js 20+ ES module, no dependencies |
+| [`c/`](manual/c.md) | C23 library on proven_c_lib (vendored) |
+| `tools/` | `test-all.sh` and the three-way differential fuzz |
 
-## Status
+## Quick start
 
-Version 0.1, experimental — the format and the APIs may change without notice. Schema checking (a Lowent
-`struct` as the schema) is planned for the next version.
+Python:
+
+```python
+import lowstruct
+doc = lowstruct.loads(open("app.lows", "rb").read())
+port = doc.get("server port").one()
+```
+
+Node.js:
+
+```js
+import { readFileSync } from "node:fs";
+import { parse } from "lowstruct";
+const port = parse(readFileSync("app.lows")).lookup("server port").one();   // a BigInt
+```
+
+C:
+
+```c
+lows_doc_t *doc;
+lows_error_t e;
+if (lows_parse(proven_heap_allocator(), src, len, &doc, &e) == PROVEN_OK) {
+    proven_i64 port;
+    if (lows_get_i64(lows_lookup(lows_doc_root(doc), "server port"), &port) == PROVEN_OK) { /* … */ }
+    lows_doc_free(doc);
+}
+```
 
 ## Testing
 
 ```sh
-scripts/test-all.sh          # the conformance suite in all three implementations
-scripts/test-all.sh --fuzz   # plus a three-way differential fuzz (same dump or same error and position)
+tools/test-all.sh          # the conformance suite in all three implementations
+tools/test-all.sh --fuzz   # plus a differential fuzz: same dump, or same error code and position
 ```
+
+Requires Python 3.10+, Node.js 20+, and a C compiler that accepts `-std=c23` (tested with GCC 14 and Clang 19 on
+Linux).
+
+## Status
+
+Version 0.1, experimental: the format and the APIs may still change. Using a Lowent `struct` as a schema is planned
+for the next version (specification, Annex D).
+
+## Relationship to Lowent
+
+lowstruct borrows the surface syntax and the literals of the Lowent language, but it is a **separate project**
+with its own specification, versions and diagnostics. It is not a Lowent component, a `.lows` file is not a
+Lowent program, and none of the libraries needs Lowent. The literals are pinned to Lowent's as of language
+revision 1.3; a later Lowent change reaches lowstruct only through a new lowstruct version.
 
 ## License
 
-MIT — see `LICENSE`. Third-party notices: `THIRD_PARTY_NOTICES.md`.
+MIT — see [`LICENSE`](LICENSE). Third-party notices: [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).

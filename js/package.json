@@ -4,9 +4,35 @@
   "description": "Parser for lowstruct (.lows), a strict configuration format in Lowent surface syntax",
   "type": "module",
   "main": "src/index.js",
-  "exports": { ".": "./src/index.js" },
-  "files": ["src/"],
-  "engines": { "node": ">=20" },
-  "scripts": { "test": "node --test" },
-  "license": "MIT"
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "license": "MIT",
+  "keywords": [
+    "lowstruct",
+    "config",
+    "configuration",
+    "parser",
+    "lowent"
+  ],
+  "homepage": "https://github.com/rubidus-api/lowstruct#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rubidus-api/lowstruct.git",
+    "directory": "js"
+  },
+  "bugs": {
+    "url": "https://github.com/rubidus-api/lowstruct/issues"
+  }
 }

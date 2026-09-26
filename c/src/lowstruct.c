@@ -1,5 +1,5 @@
 /*
- * lowstruct.c — the C implementation of docs/spec/lowstruct.md.
+ * lowstruct.c — the C implementation of spec/lowstruct.md.
  *
  * It mirrors the Python and Node.js implementations step for step; the shared
  * conformance suite (conformance/) holds all three to the same codes and values.

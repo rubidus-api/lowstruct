@@ -1,1 +1,1 @@
-{"title": ["rubrapack"], "server": {"host": ["0.0.0.0"], "port": [8080], "debug": [false], "ratio": [0.75]}}
+{"title": ["my-app"], "server": {"host": ["0.0.0.0"], "port": [8080], "debug": [false], "ratio": [0.75]}}

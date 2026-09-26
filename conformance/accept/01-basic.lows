@@ -1,5 +1,5 @@
 rem 가장 흔한 모양: 경로 이름들, 값, 마침표.
-title "rubrapack" .
+title "my-app" .
 server host "0.0.0.0" .
 server port 8080 .
 server debug false .

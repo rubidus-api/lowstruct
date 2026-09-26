@@ -4,7 +4,7 @@
     >>> doc.get("server port").one()
     8080
 
-The format is defined by docs/spec/lowstruct.md. Values keep their literal kind:
+The format is defined by spec/lowstruct.md. Values keep their literal kind:
 
     int      Python int (-2**63 .. 2**64-1)
     float    Python float (finite)
