@@ -47,3 +47,14 @@ Do not store credentials, private infrastructure details, personal data, private
 - Decision: At most 64 nested blocks; deeper is `E-LOWS-DEPTH` in all three implementations.
 - Consequences: None for hand-written files.
 - Supersedes:
+
+### 2026-09-26: lowstruct and Lowent share syntax but are separate projects
+
+- Status: Accepted (owner instruction)
+- Context: lowstruct borrows Lowent's surface syntax and literals, which invites treating it as part of Lowent.
+- Decision: lowstruct is a separate project with its own spec, versions, diagnostics and decisions. Literals are
+  pinned to Lowent spec 6.1.4 / A.6 as of 2026-09-26 (language revision 1.3); later Lowent changes are adopted only
+  through a new lowstruct spec version. No library, test or conformance case depends on Lowent. Work here never edits
+  the Lowent repositories; Lowent defects found here go to Lowent's intake.
+- Consequences: The rule lives in `AGENTS.md` ("lowstruct and Lowent") and spec annex A.
+- Supersedes:

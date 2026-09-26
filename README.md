@@ -25,6 +25,11 @@ windir "C:\\Windows" .
 - Literals are exactly Lowent's: `0x2A`, `0b101`, `1_000`, `0x1.8p1`, `'a'`, `u"…"` (UTF-16), `U"…"` (code points).
 - No octal, no `inf`/`nan`, no BOM, UTF-8 only. Every rejection has a stable code (`E-LOWS-…`) and a line:column.
 
+lowstruct shares its syntax with Lowent but is a **separate project**: its own specification, versions and
+diagnostics. It is not a Lowent component, a `.lows` file is not a Lowent program, and none of the libraries needs
+Lowent. The literals were pinned to Lowent's as of language revision 1.3; later Lowent changes are adopted, if at
+all, only through a new lowstruct version.
+
 ## What is here
 
 | Path | What |
