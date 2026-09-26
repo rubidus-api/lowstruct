@@ -1,0 +1,6 @@
+lowstruct-dump 1
+title	str	x:72756272617061636b
+server.host	str	x:302e302e302e30
+server.port	int	8080
+server.debug	bool	false
+server.ratio	float	3fe8000000000000

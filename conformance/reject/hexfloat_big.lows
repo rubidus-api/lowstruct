@@ -1,0 +1,2 @@
+rem expect E-LOWS-RANGE
+f 0x1p99999 .

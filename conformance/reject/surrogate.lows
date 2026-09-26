@@ -1,0 +1,2 @@
+rem expect E-LOWS-ESCAPE
+p "\uD800" .

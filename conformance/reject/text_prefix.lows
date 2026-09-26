@@ -1,0 +1,5 @@
+rem expect E-LOWS-PREFIX
+a text x END
+body
+END
+.

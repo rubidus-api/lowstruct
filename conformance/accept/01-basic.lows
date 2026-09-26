@@ -1,0 +1,6 @@
+rem 가장 흔한 모양: 경로 이름들, 값, 마침표.
+title "rubrapack" .
+server host "0.0.0.0" .
+server port 8080 .
+server debug false .
+server ratio 0.75 .

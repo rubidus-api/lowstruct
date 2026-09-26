@@ -1,0 +1,1 @@
+{"server": {"host": ["127.0.0.1"], "tls": {"cert": ["a.pem"], "key": ["a.key"]}}, "remote": {"origin": {"url": ["https://example.invalid/r.git"]}, "backup": {"url": ["https://example.invalid/b.git"]}}}

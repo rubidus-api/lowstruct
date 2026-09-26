@@ -1,0 +1,21 @@
+rem 로우엔트 리터럴 전부 (T0039).
+bytes "\xE9\0end" .
+utf8 "éé" .
+units u"A😀" .
+points U"한\U0001F600" .
+c 'a' .
+c_esc '\x27' .
+cu u'é' .
+cp U'😀' .
+signed +5 -5 .
+radix 0X1F 0B11 .
+hexf 0x1.8p1 0x1p-2 0X1P3 0x1_0p0 .
+decf 1E3 1.5e-3 -1.5 .
+u_text text u END
+AB
+END
+.
+cp_text text U END
+한글
+END
+.

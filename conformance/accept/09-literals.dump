@@ -1,0 +1,15 @@
+lowstruct-dump 1
+bytes	str	x:e900656e64
+utf8	str	x:c3a9c3a9
+units	u_str	[65,55357,56832]
+points	U_str	[54620,128512]
+c	char	97
+c_esc	char	39
+cu	u_char	233
+cp	U_char	128512
+signed	int	5 -5
+radix	int	31 3
+hexf	float	4008000000000000 3fd0000000000000 4020000000000000 4030000000000000
+decf	float	408f400000000000 3f589374bc6a7efa bff8000000000000
+u_text	u_str	[65,66]
+cp_text	U_str	[54620,44544]

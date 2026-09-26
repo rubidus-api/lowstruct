@@ -1,0 +1,1 @@
+{"package": {"name": ["lowent"], "version": ["0.1.0"], "description": ["저엔트로피 시스템 언어 — 검사되지 않는 중복은 거짓말로 썩는다"], "license": ["MIT"]}, "build": {"absorb": {"vm_absorb": []}}}

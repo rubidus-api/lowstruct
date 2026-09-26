@@ -1,0 +1,6 @@
+lowstruct-dump 1
+server.host	str	x:3132372e302e302e31
+server.tls.cert	str	x:612e70656d
+server.tls.key	str	x:612e6b6579
+remote.origin.url	str	x:68747470733a2f2f6578616d706c652e696e76616c69642f722e676974
+remote.backup.url	str	x:68747470733a2f2f6578616d706c652e696e76616c69642f622e676974

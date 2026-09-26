@@ -1,0 +1,10 @@
+lowstruct-dump 1
+dec	int	1000000
+hex	int	65535
+bin	int	10
+lead	int	755
+neg	int	-5
+big	int	18446744073709551615
+small	int	-9223372036854775808
+fl	float	3f589374bc6a7efa
+at_dot	int	80

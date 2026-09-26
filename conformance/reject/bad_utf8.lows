@@ -1,0 +1,2 @@
+rem expect E-LOWS-UTF8
+a "ÿ" .

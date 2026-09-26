@@ -1,0 +1,12 @@
+{
+  "name": "lowstruct",
+  "version": "0.1.0",
+  "description": "Parser for lowstruct (.lows), a strict configuration format in Lowent surface syntax",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": { ".": "./src/index.js" },
+  "files": ["src/"],
+  "engines": { "node": ">=20" },
+  "scripts": { "test": "node --test" },
+  "license": "MIT"
+}

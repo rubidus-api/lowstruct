@@ -1,0 +1,5 @@
+lowstruct-dump 1
+server.ports	int	80 443 8443
+server.names	str	x:612e6578616d706c65 x:622e6578616d706c65
+allow	str	x:31302e302e302e302f38 x:3139322e3136382e302e302f3136
+features.none_yet	empty	

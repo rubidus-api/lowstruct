@@ -1,0 +1,2 @@
+rem expect E-LOWS-NUMBER
+f 0x1p .

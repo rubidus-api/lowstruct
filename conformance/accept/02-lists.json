@@ -1,0 +1,1 @@
+{"server": {"ports": [80, 443, 8443], "names": ["a.example", "b.example"]}, "allow": ["10.0.0.0/8", "192.168.0.0/16"], "features": {"none_yet": []}}

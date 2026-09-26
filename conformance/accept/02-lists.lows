@@ -1,0 +1,10 @@
+rem 목록에는 괄호가 없다. 값이 여럿이면 목록이다.
+server ports 80 443 8443 .
+server names "a.example" "b.example" .
+rem 긴 목록은 줄을 넘겨도 된다. 끝은 마침표가 정한다.
+allow
+  "10.0.0.0/8"
+  "192.168.0.0/16"
+  .
+rem 값이 없는 문장: 빈 목록이자 "있음" 표시.
+features none_yet .

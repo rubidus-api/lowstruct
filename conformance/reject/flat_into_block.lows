@@ -1,0 +1,5 @@
+rem expect E-LOWS-SEALED
+s do
+  a 1 .
+end
+s b 2 .

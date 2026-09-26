@@ -1,0 +1,17 @@
+rem 역슬래시는 닫힌 이스케이프 집합으로만 읽힌다.
+path_escaped "C:\\Program Files\\App" .
+quote "say \"hi\"\t\u00e9" .
+rem 원문 그대로가 필요하면 text heredoc — 이스케이프를 풀지 않는다.
+path_raw text P
+C:\Program Files\App
+P
+.
+regex text R
+^\d+\.\d+$
+R
+.
+banner text B
+line one
+line two
+B
+.

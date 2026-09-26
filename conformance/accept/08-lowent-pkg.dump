@@ -1,0 +1,6 @@
+lowstruct-dump 1
+package.name	str	x:6c6f77656e74
+package.version	str	x:302e312e30
+package.description	str	x:eca080ec9794ed8ab8eba19ced94bc20ec8b9cec8aa4ed859c20ec96b8ec96b420e2809420eab280ec82aceb9098eca78020ec958aeb8a9420eca491ebb3b5ec9d8020eab1b0eca793eba790eba19c20ec8da9eb8a94eb8ba4
+package.license	str	x:4d4954
+build.absorb.vm_absorb	empty	
