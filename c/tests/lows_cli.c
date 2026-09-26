@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "lowstruct.h"
-#include "proven/heap.h"
 
 int main(int argc, char **argv) {
     for (int k = 1; k < argc; k++) {
@@ -15,12 +14,12 @@ int main(int argc, char **argv) {
         fclose(f);
         lows_doc_t *doc;
         lows_error_t e;
-        proven_err_t rc = lows_parse(proven_heap_allocator(), buf, n, &doc, &e);
+        proven_err_t rc = lows_parse(lows_default_allocator(), buf, n, &doc, &e);
         if (rc == PROVEN_ERR_INVALID_FORMAT) printf("ERR %s %u:%u\n", e.code, e.line, e.col);
         else if (rc != PROVEN_OK) printf("FAIL %d\n", (int)rc);
         else {
             char *out; size_t len;
-            if (lows_dump_canonical(doc, proven_heap_allocator(), &out, &len) == PROVEN_OK) { fwrite(out, 1, len, stdout); free(out); }
+            if (lows_dump_canonical(doc, lows_default_allocator(), &out, &len) == PROVEN_OK) { fwrite(out, 1, len, stdout); free(out); }
             lows_doc_free(doc);
         }
         printf("\x1e\n");

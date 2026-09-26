@@ -7,18 +7,44 @@
 `c/vendor/proven/` 에 들여온 proven_c_lib v0.1.1 위의 C23 입니다. API 는 `c/include/lowstruct.h` 입니다.
 오류는 값으로 돌려주고, 모든 할당은 넘겨준 `proven_allocator_t` 를 거치며, 파싱한 문서가 자기 메모리를 모두 가집니다.
 
-## 빌드
+## 미리 지은 라이브러리
+
+[릴리스](https://github.com/rubidus-api/lowstruct/releases)마다 두 플랫폼용 C 라이브러리가 들어 있습니다.
+
+| 묶음 | 내용 |
+|---|---|
+| `lowstruct-VERSION-linux-x86_64.tar.gz` | `include/`, `lib/liblowstruct.a`, `lib/liblowstruct.so.VERSION` (+ `.so.0`, `.so` 링크) |
+| `lowstruct-VERSION-windows-x86_64.zip` | `include/`, `lib/liblowstruct.a`, `lib/liblowstruct.dll.a`, `lib/lowstruct.def`, `bin/lowstruct.dll` |
+
+`include/` 에는 `lowstruct.h` 와 그것이 끌어오는 proven_c_lib 헤더 넷이 있습니다. 공유 라이브러리는 `lows_*` API 만
+내보냅니다. Linux `.so` 는 glibc 2.14 이상이 필요하고, Windows DLL(MinGW-w64, UCRT)은 Windows 10 이상의
+유니버설 C 런타임만 있으면 됩니다.
+
+## 링크
+
+| 방법 | 컴파일 | 링크 |
+|---|---|---|
+| 정적 | `-Iinclude` | `lib/liblowstruct.a -lm` (Linux) · `lib/liblowstruct.a` (Windows) |
+| 공유 | `-Iinclude -DLOWS_SHARED` | `-Llib -llowstruct` (Linux) · `lib/liblowstruct.dll.a` (Windows, MinGW-w64), 그리고 `.so`/`.dll` 을 함께 배포 |
+
+`LOWS_SHARED` 는 Windows 에서 `__declspec(dllimport)` 를 고릅니다. 헤더는 C23, C17, C11 로 컴파일됩니다(C++ 는 아님).
+Microsoft 도구에서는 `lib /def:lowstruct.def /machine:x64 /out:lowstruct.lib` 로 동봉한 `.def` 에서 import 라이브러리를
+만들 수 있습니다. 이 경로는 시험하지 않았습니다.
+
+## 소스에서 빌드
 
 ```sh
 cd c
 cc -o ../build/nob nob.c    # 한 번만. 그 뒤로는 nob.c 가 바뀌면 nob 이 스스로 다시 짓습니다
-../build/nob                # ../build/c/liblowstruct.a 를 짓고 적합성 사례를 돌립니다
+../build/nob                # ../build/c/ 에 정적·공유 라이브러리, 두 가지 모두로 적합성 사례
 ../build/nob lib            # 라이브러리만
+../build/nob windows        # Windows 용 교차 빌드 (x86_64-w64-mingw32-gcc 필요)
 ```
 
-라이브러리를 쓰려면 `c/include`, `c/vendor/proven/include`, `c/vendor/proven/platform` 을 include 경로에 넣고
-`build/c/liblowstruct.a` 를 `-lm` 과 함께 링크합니다. 컴파일러는 `-std=c23` 을 받아야 하며, Linux 의 GCC 14 와
-Clang 19 에서 시험했습니다. Windows 빌드는 아직 확인하지 않았습니다.
+Windows 대상은 `../build/c/windows-x86_64/` 에 정적 라이브러리, `lowstruct.dll` 과 그 import 라이브러리·`.def`,
+그리고 Windows 에서 적합성 파일을 인자로 주어 돌릴 시험 프로그램 둘(정적·DLL)을 씁니다. `tools/package.sh` 가 두 빌드를
+릴리스 묶음으로 만듭니다. 컴파일러는 `-std=c23` 을 받아야 하며, Linux 의 GCC 14 와 Clang 19 에서 시험했고,
+Windows 빌드(MinGW-w64 GCC 16)는 Windows 11 에서 시험했습니다.
 
 ## 파일 읽기
 
@@ -27,13 +53,12 @@ Clang 19 에서 시험했습니다. Windows 빌드는 아직 확인하지 않았
 #include <string.h>
 
 #include "lowstruct.h"
-#include "proven/heap.h"
 
 int main(void) {
     const char *src = "server do\n  host \"0.0.0.0\" .\n  port 8080 .\nend\n";
     lows_doc_t *doc;
     lows_error_t e;
-    if (lows_parse(proven_heap_allocator(), (const proven_byte_t *)src, strlen(src), &doc, &e) != PROVEN_OK) {
+    if (lows_parse(lows_default_allocator(), (const proven_byte_t *)src, strlen(src), &doc, &e) != PROVEN_OK) {
         fprintf(stderr, "%u:%u %s: %s\n", e.line, e.col, e.code, e.message);
         return 1;
     }
@@ -57,7 +82,10 @@ int main(void) {
 proven_err_t lows_parse(proven_allocator_t alloc, const proven_byte_t *src, proven_size_t len,
                         lows_doc_t **out, lows_error_t *err);
 void lows_doc_free(lows_doc_t *doc);
+proven_allocator_t lows_default_allocator(void);
 ```
+
+`lows_default_allocator()` 는 범용 힙 할당자입니다. 메모리가 어디서 오는지 정하려면 직접 만든 `proven_allocator_t` 를 넘깁니다.
 
 
 | 돌려주는 값 | 뜻 |

@@ -49,6 +49,14 @@ tools/test-all.sh --fuzz    # 아래의 차분 퍼즈까지
 셋은 같은 덤프, 또는 같은 오류 **코드·줄·열**을 내야 합니다. 어긋난 입력은 다시 돌려 볼 수 있게 `build/fuzz/` 에
 남습니다. `cc` 와 `node` 가 경로에 있어야 합니다.
 
+## 릴리스 만들기
+
+1. `c/include/lowstruct.h`, `js/package.json`, `js/src/index.js`, `python/pyproject.toml`,
+   `python/lowstruct/__init__.py`, 명세의 판 번호를 고치고, `CHANGELOG.md` 항목을 그 판 아래로 옮깁니다.
+2. 이 머신에서(`cd c && ../build/nob`), 그리고 MinGW-w64 가 있는 곳에서 Windows 용으로(`../build/nob windows`) 빌드하고,
+   Windows 에서 두 시험 프로그램을 적합성 파일과 함께 돌립니다.
+3. `tools/package.sh` 가 묶음, npm 패키지, 휠, `SHA256SUMS` 를 `build/dist/` 에 씁니다.
+
 ## 규칙을 더하거나 결함을 고칠 때
 
 1. 먼저 `conformance/` 에 사례를 더합니다. 수용 사례면 `.dump` 와 함께, 거부 사례면 `rem expect` 줄과 함께.

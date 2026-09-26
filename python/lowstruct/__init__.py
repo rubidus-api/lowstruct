@@ -19,7 +19,7 @@ import re
 import struct
 
 __all__ = ["loads", "load", "dumps_canonical", "LowsError", "Branch", "Leaf", "KINDS"]
-__version__ = "0.1.0"
+__version__ = "0.0.1"
 
 KINDS = ("int", "float", "bool", "str", "u_str", "U_str", "char", "u_char", "U_char")
 

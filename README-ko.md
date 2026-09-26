@@ -1,5 +1,7 @@
 # lowstruct
 
+**lowstruct v0.0.1** — C 라이브러리: [Linux x86_64 (.tar.gz)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-linux-x86_64.tar.gz) · [Windows x86_64 (.zip)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-windows-x86_64.zip) · [모든 판](https://github.com/rubidus-api/lowstruct/releases)
+
 [English](README.md) · **한국어**
 
 작고 엄격한 설정 파일 형식(`.lows`)과, 하나의 적합성 사례를 함께 통과하는 독립된 파서 셋 — **C**, **Node.js**,
@@ -36,13 +38,13 @@ windir "C:\\Windows" .
 
 | 경로 | 내용 |
 |---|---|
-| [`spec/`](spec/lowstruct.ko.md) | 명세 판 0.1 — 영문이 규범이고 한국어는 번역 |
+| [`spec/`](spec/lowstruct.ko.md) | 명세 판 0.0.1 — 영문이 규범이고 한국어는 번역 |
 | [`manual/`](manual/README.md) · [`manual-ko/`](manual-ko/README.md) | 매뉴얼: 파일 쓰기, 세 라이브러리, 구현하는 사람을 위한 내용 |
 | [`conformance/`](manual-ko/implementers.md) | 정규 덤프가 딸린 수용 사례, 기대 코드가 적힌 거부 사례 |
 | [`python/`](manual-ko/python.md) | Python 3.10+ 패키지, 의존성 없음 |
 | [`js/`](manual-ko/javascript.md) | Node.js 20+ ES 모듈, 의존성 없음 |
-| [`c/`](manual-ko/c.md) | proven_c_lib(들여옴) 위의 C23 라이브러리 |
-| `tools/` | `test-all.sh` 와 세 구현 차분 퍼즈 |
+| [`c/`](manual-ko/c.md) | proven_c_lib(들여옴) 위의 C23 라이브러리: Linux·Windows 용 정적·공유(`.so`, `.dll`) |
+| `tools/` | `test-all.sh`, 세 구현 차분 퍼즈, 릴리스 묶음을 만드는 `package.sh` |
 
 ## 빨리 시작하기
 
@@ -67,7 +69,7 @@ C:
 ```c
 lows_doc_t *doc;
 lows_error_t e;
-if (lows_parse(proven_heap_allocator(), src, len, &doc, &e) == PROVEN_OK) {
+if (lows_parse(lows_default_allocator(), src, len, &doc, &e) == PROVEN_OK) {
     proven_i64 port;
     if (lows_get_i64(lows_lookup(lows_doc_root(doc), "server port"), &port) == PROVEN_OK) { /* … */ }
     lows_doc_free(doc);
@@ -82,10 +84,11 @@ tools/test-all.sh --fuzz   # 차분 퍼즈까지: 같은 덤프, 또는 같은 �
 ```
 
 Python 3.10+, Node.js 20+, `-std=c23` 을 받는 C 컴파일러가 필요합니다(Linux 의 GCC 14 와 Clang 19 에서 시험함).
+Windows 라이브러리는 MinGW-w64 GCC 16 으로 교차 빌드하고, 그 시험은 Windows 11 에서 돌립니다.
 
 ## 상태
 
-판 0.1, 실험 단계입니다. 형식과 API 가 아직 바뀔 수 있습니다. 로우엔트 `struct` 를 스키마로 쓰는 기능은 다음 판에
+판 0.0.1, 실험 단계입니다. 형식과 API 가 아직 바뀔 수 있습니다. 로우엔트 `struct` 를 스키마로 쓰는 기능은 다음 판에
 넣을 계획입니다(명세 부록 D).
 
 ## 로우엔트와의 관계

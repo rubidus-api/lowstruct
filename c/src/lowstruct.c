@@ -15,6 +15,7 @@
 #include <string.h>
 
 #include "proven/float_parse.h"
+#include "proven/heap.h"
 #include "proven/u8str.h"
 
 /* ---- pools -------------------------------------------------------------- */
@@ -848,6 +849,8 @@ void lows_doc_free(lows_doc_t *doc) {
 }
 
 const lows_node_t *lows_doc_root(const lows_doc_t *doc) { return doc ? doc->root : NULL; }
+
+proven_allocator_t lows_default_allocator(void) { return proven_heap_allocator(); }
 
 const lows_node_t *lows_lookup(const lows_node_t *node, const char *path) {
     if (!node || !path) return NULL;

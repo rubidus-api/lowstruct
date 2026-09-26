@@ -1,6 +1,6 @@
 {
   "name": "lowstruct",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Parser for lowstruct (.lows), a strict configuration format in Lowent surface syntax",
   "type": "module",
   "main": "src/index.js",

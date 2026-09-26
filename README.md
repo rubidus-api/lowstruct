@@ -1,5 +1,7 @@
 # lowstruct
 
+**lowstruct v0.0.1** — C library: [Linux x86_64 (.tar.gz)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-linux-x86_64.tar.gz) · [Windows x86_64 (.zip)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-windows-x86_64.zip) · [all releases](https://github.com/rubidus-api/lowstruct/releases)
+
 **English** · [한국어](README-ko.md)
 
 A small, strict configuration file format (`.lows`), with three independent parsers — **C**, **Node.js** and
@@ -36,13 +38,13 @@ windir "C:\\Windows" .
 
 | Path | Contents |
 |---|---|
-| [`spec/`](spec/lowstruct.md) | the specification, version 0.1 — English is normative, Korean is a translation |
+| [`spec/`](spec/lowstruct.md) | the specification, version 0.0.1 — English is normative, Korean is a translation |
 | [`manual/`](manual/README.md) · [`manual-ko/`](manual-ko/README.md) | the manual: writing files, the three libraries, notes for implementers |
 | [`conformance/`](manual/implementers.md) | accept cases with their canonical dumps, reject cases with their expected codes |
 | [`python/`](manual/python.md) | Python 3.10+ package, no dependencies |
 | [`js/`](manual/javascript.md) | Node.js 20+ ES module, no dependencies |
-| [`c/`](manual/c.md) | C23 library on proven_c_lib (vendored) |
-| `tools/` | `test-all.sh` and the three-way differential fuzz |
+| [`c/`](manual/c.md) | C23 library on proven_c_lib (vendored): static and shared (`.so`, `.dll`) for Linux and Windows |
+| `tools/` | `test-all.sh`, the three-way differential fuzz, and `package.sh` for release archives |
 
 ## Quick start
 
@@ -67,7 +69,7 @@ C:
 ```c
 lows_doc_t *doc;
 lows_error_t e;
-if (lows_parse(proven_heap_allocator(), src, len, &doc, &e) == PROVEN_OK) {
+if (lows_parse(lows_default_allocator(), src, len, &doc, &e) == PROVEN_OK) {
     proven_i64 port;
     if (lows_get_i64(lows_lookup(lows_doc_root(doc), "server port"), &port) == PROVEN_OK) { /* … */ }
     lows_doc_free(doc);
@@ -82,11 +84,11 @@ tools/test-all.sh --fuzz   # plus a differential fuzz: same dump, or same error 
 ```
 
 Requires Python 3.10+, Node.js 20+, and a C compiler that accepts `-std=c23` (tested with GCC 14 and Clang 19 on
-Linux).
+Linux). The Windows libraries are cross-built with MinGW-w64 GCC 16 and their tests run on Windows 11.
 
 ## Status
 
-Version 0.1, experimental: the format and the APIs may still change. Using a Lowent `struct` as a schema is planned
+Version 0.0.1, experimental: the format and the APIs may still change. Using a Lowent `struct` as a schema is planned
 for the next version (specification, Annex D).
 
 ## Relationship to Lowent

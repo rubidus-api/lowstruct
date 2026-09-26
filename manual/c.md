@@ -6,18 +6,44 @@ C23 on [proven_c_lib](../c/vendor/proven/LICENSE) v0.1.1, which is vendored unde
 The API is `c/include/lowstruct.h`. Errors are returned as values, every allocation goes through the
 `proven_allocator_t` you pass in, and a parsed document owns all of its memory.
 
-## Build
+## Prebuilt libraries
+
+Each [release](https://github.com/rubidus-api/lowstruct/releases) carries the C library for two platforms:
+
+| Archive | Contents |
+|---|---|
+| `lowstruct-VERSION-linux-x86_64.tar.gz` | `include/`, `lib/liblowstruct.a`, `lib/liblowstruct.so.VERSION` (+ `.so.0`, `.so` links) |
+| `lowstruct-VERSION-windows-x86_64.zip` | `include/`, `lib/liblowstruct.a`, `lib/liblowstruct.dll.a`, `lib/lowstruct.def`, `bin/lowstruct.dll` |
+
+`include/` holds `lowstruct.h` and the four proven_c_lib headers it includes. The shared libraries export only the
+`lows_*` API. The Linux `.so` needs glibc 2.14 or later; the Windows DLL (MinGW-w64, UCRT) needs only the Universal
+C Runtime of Windows 10 and later.
+
+## Linking
+
+| How | Compile | Link |
+|---|---|---|
+| static | `-Iinclude` | `lib/liblowstruct.a -lm` (Linux) · `lib/liblowstruct.a` (Windows) |
+| shared | `-Iinclude -DLOWS_SHARED` | `-Llib -llowstruct` (Linux) · `lib/liblowstruct.dll.a` (Windows, MinGW-w64), and ship the `.so`/`.dll` |
+
+`LOWS_SHARED` selects `__declspec(dllimport)` on Windows. The header compiles as C23, C17 and C11 (not as C++).
+With Microsoft's tools, `lib /def:lowstruct.def /machine:x64 /out:lowstruct.lib` makes an import library from the
+shipped `.def`; that route has not been tested.
+
+## Building from source
 
 ```sh
 cd c
 cc -o ../build/nob nob.c    # once; nob rebuilds itself when nob.c changes
-../build/nob                # builds ../build/c/liblowstruct.a and runs the conformance suite
-../build/nob lib            # the library only
+../build/nob                # static + shared library in ../build/c/, conformance suite against both
+../build/nob lib            # the libraries only
+../build/nob windows        # cross-build for Windows (needs x86_64-w64-mingw32-gcc)
 ```
 
-To use the library, add `c/include`, `c/vendor/proven/include` and `c/vendor/proven/platform` to the include
-path and link `build/c/liblowstruct.a` with `-lm`. The compiler must accept `-std=c23`; the suite is tested with
-GCC 14 and Clang 19 on Linux. A Windows build has not been verified yet.
+The Windows target writes `../build/c/windows-x86_64/`: the static library, `lowstruct.dll` with its import library
+and `.def`, and two test programs (static and DLL) to run on Windows with the conformance files as arguments.
+`tools/package.sh` turns both builds into the release archives. The compiler must accept `-std=c23`; the suite is
+tested with GCC 14 and Clang 19 on Linux, and the Windows build (MinGW-w64 GCC 16) is tested on Windows 11.
 
 ## Read a file
 
@@ -26,13 +52,12 @@ GCC 14 and Clang 19 on Linux. A Windows build has not been verified yet.
 #include <string.h>
 
 #include "lowstruct.h"
-#include "proven/heap.h"
 
 int main(void) {
     const char *src = "server do\n  host \"0.0.0.0\" .\n  port 8080 .\nend\n";
     lows_doc_t *doc;
     lows_error_t e;
-    if (lows_parse(proven_heap_allocator(), (const proven_byte_t *)src, strlen(src), &doc, &e) != PROVEN_OK) {
+    if (lows_parse(lows_default_allocator(), (const proven_byte_t *)src, strlen(src), &doc, &e) != PROVEN_OK) {
         fprintf(stderr, "%u:%u %s: %s\n", e.line, e.col, e.code, e.message);
         return 1;
     }
@@ -55,7 +80,11 @@ int main(void) {
 proven_err_t lows_parse(proven_allocator_t alloc, const proven_byte_t *src, proven_size_t len,
                         lows_doc_t **out, lows_error_t *err);
 void lows_doc_free(lows_doc_t *doc);
+proven_allocator_t lows_default_allocator(void);
 ```
+
+`lows_default_allocator()` is the general-purpose heap allocator. Pass your own `proven_allocator_t` to control
+where the memory comes from.
 
 | Return | Meaning |
 |---|---|

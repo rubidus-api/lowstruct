@@ -10,7 +10,7 @@
 //   u_str     Array of UTF-16 code units    U_str   Array of code points
 //   char / u_char / U_char   Number
 
-export const VERSION = "0.1.0";
+export const VERSION = "0.0.1";
 export const KINDS = Object.freeze(["int", "float", "bool", "str", "u_str", "U_str", "char", "u_char", "U_char"]);
 
 const VALUE_KINDS = new Set(KINDS);

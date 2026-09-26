@@ -10,7 +10,6 @@
 #include <string.h>
 
 #include "lowstruct.h"
-#include "proven/heap.h"
 
 static int failures = 0;
 static int checks = 0;
@@ -38,7 +37,7 @@ static void run_case(const char *path) {
     unsigned char *src = read_file(path, &len);
     CHECK(src != NULL, "%s: cannot read", path);
     if (!src) return;
-    proven_allocator_t heap = proven_heap_allocator();
+    proven_allocator_t heap = lows_default_allocator();
     lows_doc_t *doc = NULL;
     lows_error_t e = { 0 };
     proven_err_t rc = lows_parse(heap, src, len, &doc, &e);
@@ -76,7 +75,7 @@ static void run_case(const char *path) {
 static lows_doc_t *parse_str(const char *s, lows_error_t *e) {
     lows_doc_t *doc = NULL;
     lows_error_t tmp;
-    if (lows_parse(proven_heap_allocator(), (const proven_byte_t *)s, strlen(s), &doc, e ? e : &tmp) != PROVEN_OK) return NULL;
+    if (lows_parse(lows_default_allocator(), (const proven_byte_t *)s, strlen(s), &doc, e ? e : &tmp) != PROVEN_OK) return NULL;
     return doc;
 }
 
@@ -113,9 +112,9 @@ static void api_tests(void) {
     CHECK(parse_str("a \"\xf0\x9f\x98\x80\" \xd9\xa3 .", &e) == NULL && e.col == 7 && strcmp(e.code, "E-LOWS-CHARSET") == 0, "column counts code points");
 
     lows_doc_t *out = (lows_doc_t *)1;
-    CHECK(lows_parse(proven_heap_allocator(), NULL, 0, &out, NULL) == PROVEN_OK && out != NULL, "empty input is an empty document");
+    CHECK(lows_parse(lows_default_allocator(), NULL, 0, &out, NULL) == PROVEN_OK && out != NULL, "empty input is an empty document");
     if (out) lows_doc_free(out);
-    CHECK(lows_parse(proven_heap_allocator(), (const proven_byte_t *)"a", 1, NULL, NULL) == PROVEN_ERR_INVALID_ARG, "NULL out");
+    CHECK(lows_parse(lows_default_allocator(), (const proven_byte_t *)"a", 1, NULL, NULL) == PROVEN_ERR_INVALID_ARG, "NULL out");
 }
 
 int main(int argc, char **argv) {

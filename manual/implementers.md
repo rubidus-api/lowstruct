@@ -49,6 +49,14 @@ tools/test-all.sh --fuzz    # plus the differential fuzz below
 input to all three implementations. They must print the same dump, or the same error **code, line and column**.
 Disagreements are saved under `build/fuzz/` for replay. It needs `cc` and `node` on the path.
 
+## Making a release
+
+1. Set the version in `c/include/lowstruct.h`, `js/package.json`, `js/src/index.js`, `python/pyproject.toml`,
+   `python/lowstruct/__init__.py` and the specification, and move the `CHANGELOG.md` entries under it.
+2. Build natively (`cd c && ../build/nob`) and for Windows (`../build/nob windows` where MinGW-w64 is installed), and
+   run both Windows test programs on Windows with the conformance files.
+3. `tools/package.sh` writes the archives, the npm package, the wheel and `SHA256SUMS` to `build/dist/`.
+
 ## Adding a rule or fixing a bug
 
 1. Add a case to `conformance/` first: an accept case with its `.dump`, or a reject case with its

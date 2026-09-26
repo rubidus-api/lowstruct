@@ -1,11 +1,11 @@
-# lowstruct Format Specification — Version 0.1
+# lowstruct Format Specification — Version 0.0.1
 
 **English** · [한국어](lowstruct.ko.md)
 
 - Format name: **lowstruct**. File extension: `.lows`. Media type (unregistered): `text/x-lowstruct`.
 - lowstruct shares its lexical syntax with the Lowent language but is a **separate format** (Annex A).
   A `.lows` file is not a Lowent program.
-- Status: version 0.1, draft. No compatibility is promised yet.
+- Status: version 0.0.1, draft. No compatibility is promised yet.
 - This document is normative. The three implementations (`c/`, `js/`, `python/`) and the conformance suite
   (`conformance/`) follow it; where they disagree with it, this document is right and they are fixed.
 - This English text is the canonical version; the Korean text is its translation.
@@ -267,8 +267,8 @@ Flat statements MAY share a prefix (`package name …` / `package version …`).
   versions, diagnostics and schedule, and this document is its only norm. Lowent documents are a source, not a norm.
 - The literals (3.3–3.5) are **pinned** to Lowent's specification as of 2026-09-26 (language revision 1.3),
   §6.1.4 and annex A.6. A later change in Lowent does not change lowstruct; adopting one takes a new lowstruct
-  version. In version 0.1, the same literal giving different values in the two is a defect.
-  *(Note)* A differential check made for version 0.1 found that `lowentc` accepted `0x` as 0; that was fixed in Lowent.
+  version. In version 0.0.1, the same literal giving different values in the two is a defect.
+  *(Note)* A differential check made for version 0.0.1 found that `lowentc` accepted `0x` as 0; that was fixed in Lowent.
 - Lowent's package manifest `pkg.low` reads unchanged as lowstruct (case `08-lowent-pkg`).
 - The body of Lowent's `make point do x 1 . y 2 . end` has the shape of a lowstruct block; that is the starting
   point for the schema planned for the next version (Annex D).
@@ -307,7 +307,7 @@ lowstruct-dump 1
    keys; fields not declared = misspelt keys; field types = value range and kind. The mapping of lists to `slice`,
    named blocks to maps, and empty leaves to `bool` or `option` has to be settled.
 2. **Symbols.** `level debug .` is currently a `debug` leaf under a `level` branch. One option marks the boundary with `be`.
-3. **Relaxing block sealing (4.3).** Version 0.1 takes the strict side.
+3. **Relaxing block sealing (4.3).** Version 0.0.1 takes the strict side.
 4. **A canonical formatter.** It would always write one-line backslashes as `\\`.
 5. **A warning for path-like strings.** It would flag `\t`, `\n` and the like inside strings that start with a drive
    letter or `\\server`.
