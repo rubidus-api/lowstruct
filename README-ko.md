@@ -1,6 +1,6 @@
 # lowstruct
 
-**lowstruct v0.0.1** — C 라이브러리: [Linux x86_64 (.tar.gz)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-linux-x86_64.tar.gz) · [Windows x86_64 (.zip)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-windows-x86_64.zip) · [모든 판](https://github.com/rubidus-api/lowstruct/releases)
+**lowstruct v0.0.1** — [Node.js·Python 설치 팩, C 라이브러리](https://github.com/rubidus-api/lowstruct/releases/tag/v0.0.1) · C 라이브러리: [Linux x86_64 (.tar.gz)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-linux-x86_64.tar.gz) · [Windows x86_64 (.zip)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-windows-x86_64.zip) · [모든 판](https://github.com/rubidus-api/lowstruct/releases)
 
 [English](README.md) · **한국어**
 

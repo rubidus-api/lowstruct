@@ -6,6 +6,9 @@ Pure Python, no dependencies, Python 3.10 or later. The package is the directory
 
 ## Install
 
+From a [release](https://github.com/rubidus-api/lowstruct/releases): unzip `lowstruct-VERSION-python.zip`, then `pip install ./lowstruct-VERSION-python`
+(or put that folder on `PYTHONPATH`). The package is not on PyPI yet.
+
 From a checkout:
 
 ```sh

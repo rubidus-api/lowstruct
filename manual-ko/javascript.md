@@ -8,6 +8,9 @@
 
 ## 설치
 
+[릴리스](https://github.com/rubidus-api/lowstruct/releases)에서: `lowstruct-VERSION-node.zip` 을 풀고 `npm install ./lowstruct-VERSION-node`.
+npm 에는 아직 올리지 않았습니다.
+
 저장소를 받은 뒤:
 
 ```sh

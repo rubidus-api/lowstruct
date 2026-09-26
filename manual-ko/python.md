@@ -8,6 +8,9 @@
 
 ## 설치
 
+[릴리스](https://github.com/rubidus-api/lowstruct/releases)에서: `lowstruct-VERSION-python.zip` 을 풀고 `pip install ./lowstruct-VERSION-python`
+(또는 그 폴더를 `PYTHONPATH` 에 넣습니다). PyPI 에는 아직 올리지 않았습니다.
+
 저장소를 받은 뒤:
 
 ```sh

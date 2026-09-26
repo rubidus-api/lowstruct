@@ -6,6 +6,12 @@ release archives share one version number.
 
 ## [Unreleased]
 
+### Changed
+
+- Release downloads for Node.js and Python are install packs (`lowstruct-VERSION-node.zip`,
+  `lowstruct-VERSION-python.zip`) instead of an npm tarball and a wheel; nothing is published to npm or PyPI yet.
+  The 0.0.1 release was updated the same way.
+
 ## [0.0.1] - 2026-09-26
 
 First release.

@@ -6,6 +6,9 @@ An ES module with no dependencies, for Node.js 20 or later. The package is the d
 
 ## Install
 
+From a [release](https://github.com/rubidus-api/lowstruct/releases): unzip `lowstruct-VERSION-node.zip`, then `npm install ./lowstruct-VERSION-node`.
+The package is not on npm yet.
+
 From a checkout:
 
 ```sh

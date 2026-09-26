@@ -1,6 +1,6 @@
 #!/bin/sh
-# Package a release into build/dist/: the C library for Linux and Windows, the npm package,
-# the Python wheel, and SHA256SUMS.
+# Package a release into build/dist/: the C library for Linux and Windows, install packs (zip) for
+# Node.js and Python, and SHA256SUMS. Nothing is published to a package registry.
 #
 # Needs the native build (cd c && ../build/nob) and the Windows build (cd c && ../build/nob windows,
 # on a machine with x86_64-w64-mingw32-gcc) to be done first.
@@ -63,9 +63,35 @@ cp build/c/windows-x86_64/liblowstruct.a build/c/windows-x86_64/liblowstruct.dll
 cp build/c/windows-x86_64/lowstruct.dll "$dist/$W/bin/"
 (cd "$dist" && zip -qr "$W.zip" "$W")
 
-# Node.js and Python packages
-(cd js && npm pack --silent --pack-destination "$root/$dist" >/dev/null)
-pip wheel ./python --no-deps --no-build-isolation -q -w "$dist" >/dev/null 2>&1
-rm -rf python/build python/*.egg-info
+# Node.js and Python install packs: the package directory as it is in the repository, installable from
+# the unpacked folder without a registry.
+N="lowstruct-$ver-node"
+mkdir -p "$dist/$N"
+cp -r js/src js/package.json js/README.md js/LICENSE "$dist/$N/"
+cat > "$dist/$N/INSTALL.md" <<EOT
+# Installing lowstruct $ver for Node.js
 
-(cd "$dist" && rm -rf "$L" "$W" && sha256sum -- * > SHA256SUMS && cat SHA256SUMS)
+Node.js 20 or later. From the folder that contains this one:
+
+    npm install ./$N
+
+Then \`import { parse } from "lowstruct";\`. Usage: README.md in this folder, and
+https://github.com/rubidus-api/lowstruct/blob/v$ver/manual/javascript.md
+EOT
+P="lowstruct-$ver-python"
+mkdir -p "$dist/$P/lowstruct"
+cp python/lowstruct/__init__.py "$dist/$P/lowstruct/"
+cp python/pyproject.toml python/README.md python/LICENSE "$dist/$P/"
+cat > "$dist/$P/INSTALL.md" <<EOT
+# Installing lowstruct $ver for Python
+
+Python 3.10 or later. From the folder that contains this one:
+
+    pip install ./$P
+
+or, without installing, put this folder on \`PYTHONPATH\`. Then \`import lowstruct\`. Usage: README.md in
+this folder, and https://github.com/rubidus-api/lowstruct/blob/v$ver/manual/python.md
+EOT
+(cd "$dist" && zip -qr "$N.zip" "$N" && zip -qr "$P.zip" "$P")
+
+(cd "$dist" && rm -rf "$L" "$W" "$N" "$P" && sha256sum -- * > SHA256SUMS && cat SHA256SUMS)
