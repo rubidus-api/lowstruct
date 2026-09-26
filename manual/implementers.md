@@ -55,7 +55,9 @@ Disagreements are saved under `build/fuzz/` for replay. It needs `cc` and `node`
    `python/lowstruct/__init__.py` and the specification, and move the `CHANGELOG.md` entries under it.
 2. Build natively (`cd c && ../build/nob`) and for Windows (`../build/nob windows` where MinGW-w64 is installed), and
    run both Windows test programs on Windows with the conformance files.
-3. `tools/package.sh` writes the C archives, the Node.js and Python install packs (zip) and `SHA256SUMS` to
+3. `tools/site/build-site.sh` regenerates the web manual in `docs/` and the two manual PDFs in `build/site/`
+   (needs Typst and the fonts named in the script); the PDFs are attached to the release.
+4. `tools/package.sh` writes the C archives, the Node.js and Python install packs (zip) and `SHA256SUMS` to
    `build/dist/`. Nothing is published to a package registry.
 
 ## Adding a rule or fixing a bug

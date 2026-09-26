@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>구현하는 사람을 위해 — lowstruct 매뉴얼</title>
+<link rel="stylesheet" href="manual.css">
+<script>(function(){try{var s=JSON.parse(localStorage.getItem('lows-read')||'{}');var r=document.documentElement;if(s.theme&&s.theme!=='auto')r.setAttribute('data-theme',s.theme);if(s.fg)r.style.setProperty('--fg',s.fg);if(s.bg)r.style.setProperty('--bg',s.bg);if(s.link)r.style.setProperty('--link',s.link);if(s.width)r.setAttribute('data-measure','on');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip" href="#content">본문으로 건너뛰기</a>
+<div class="bar"><strong><a href="index.html">lowstruct 매뉴얼</a></strong><button class="here-btn" type="button" aria-expanded="false" aria-controls="here-panel">구현하는 사람을 위해 <span class="caret">▾</span></button><span class="bar-nav"><a href="c.html" title="이전" aria-label="이전">←</a><a href="index.html" title="목차" aria-label="목차">↑</a><a href="spec.html" title="다음" aria-label="다음">→</a></span></div>
+<div id="here-panel" class="here-panel" hidden><div class="tools"><span class="ver">0.0.1</span><button class="tool" type="button" id="set-open" aria-expanded="false">⚙ 설정</button><a class="tool" href="../en/implementers.html">English</a><a class="tool" href="https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-ko-manual.pdf">⤓ PDF</a><a class="tool" href="https://github.com/rubidus-api/lowstruct" title="이 프로젝트의 GitHub 저장소">⌥ 저장소</a><a class="tool" href="https://rubidus-api.github.io/" title="rubidus-api.github.io — 공개된 모든 프로젝트">⌂ 전체 사이트</a><a class="tool" href="https://github.com/rubidus-api" title="github.com/rubidus-api — 모든 저장소">≡ 저장소 목록</a></div><div class="setbox" id="setbox" hidden><label class="setrow"><input type="checkbox" id="s-width"><span>가로폭 제한</span></label><div class="setrow"><span class="setlbl">테마</span><span class="seg"><button type="button" class="segb" data-theme="auto">시스템</button><button type="button" class="segb" data-theme="light">밝게</button><button type="button" class="segb" data-theme="dark">어둡게</button></span></div><div class="setrow"><span class="setlbl">색</span><label class="col"><span>글자</span><input type="color" id="s-fg"></label><label class="col"><span>배경</span><input type="color" id="s-bg"></label><label class="col"><span>링크</span><input type="color" id="s-link"></label></div><p class="setnote">설정은 이 브라우저에만 저장됩니다.</p></div><div class="search"><label class="setlbl" for="q">검색</label> <input type="search" id="q" placeholder="C 함수나 제목으로 찾기" autocomplete="off"><p class="hint">C API 와 모든 제목에서 찾습니다 — 본문 전문은 아닙니다.</p><ul id="qr"></ul></div><div class="here-head"><strong>이 페이지 안에서</strong></div><div class="here-body"><a href="#적합성-사례">적합성 사례</a><a href="#정규-덤프">정규 덤프</a><a href="#모두-돌리기">모두 돌리기</a><a href="#차분-퍼즈">차분 퍼즈</a><a href="#릴리스-만들기">릴리스 만들기</a><a href="#규칙을-더하거나-결함을-고칠-때">규칙을 더하거나 결함을 고칠 때</a><a href="#네-번째-구현을-쓸-때">네 번째 구현을 쓸 때</a></div></div>
+<div class="page">
+<main id="content"><div class="content">
+<div class="masthead">0.0.1 · 마크다운 매뉴얼에서 생성됨</div>
+<h1 id="구현하는-사람을-위해">구현하는 사람을 위해<a class="anchor" href="#구현하는-사람을-위해" aria-hidden="true">#</a></h1><p><a href="../en/implementers.html">English</a> · <strong>한국어</strong></p><blockquote>정본은 영문 매뉴얼이고, 이 문서는 그 번역입니다.</blockquote><p>세 구현 가운데 하나를 고치거나 네 번째 구현을 쓰는 사람을 위한 쪽입니다.</p><h2 id="적합성-사례">적합성 사례<a class="anchor" href="#적합성-사례" aria-hidden="true">#</a></h2><p><code>conformance/</code> 에는 모든 구현이 통과해야 하는 사례가 있습니다(명세 부록 B).</p><div class="tblwrap"><table><tr><td><strong>경로</strong></td><td><strong>규칙</strong></td></tr><tr><td><code>conformance/accept/NAME.lows</code></td><td>받아들여야 합니다</td></tr><tr><td><code>conformance/accept/NAME.dump</code></td><td>그 정규 덤프, 바이트 단위로 같아야 합니다</td></tr><tr><td><code>conformance/accept/NAME.json</code></td><td>처음 열 사례에만 있는, 손으로 쓴 보기. Python 시험이 독립된 기준으로 대조합니다</td></tr><tr><td><code>conformance/reject/NAME.lows</code></td><td>첫 줄 <code>rem expect E-LOWS-…</code> 의 코드로 거부해야 합니다</td></tr></table></div><p>사례는 바이트 단위로 정확합니다. 일부러 CRLF, 홀로 선 CR, BOM, NUL, 잘못된 UTF-8 을 담은 것이 있습니다. <code>.gitattributes</code> 가 Git 의 변환을 막으니, 줄 끝을 바꾸는 도구로 고치지 마십시오.</p><h2 id="정규-덤프">정규 덤프<a class="anchor" href="#정규-덤프" aria-hidden="true">#</a></h2><p>부동소수를 글자로 옮기는 방법이 언어마다 달라서, 구현은 줄 단위 덤프로 서로 견줍니다.</p><pre><code data-lang="text">lowstruct-dump 1
+server.port int 8080
+ratio float 3fe0000000000000
+name  str x:6869
+units u_str [65,66]
+flag  empty </code></pre><p>잎마다 한 줄, 소스 순서로 깊이 먼저: 점으로 이은 경로, 탭, 종류, 탭, 그리고 공백으로 가른 값입니다. 부동소수는 binary64 비트를 십육진으로, 바이트 문자열은 <code>x:</code> 와 십육진으로 적습니다. 전체 규칙은 명세 부록 C 에 있습니다.</p><h2 id="모두-돌리기">모두 돌리기<a class="anchor" href="#모두-돌리기" aria-hidden="true">#</a></h2><pre><code data-lang="sh"><span style="color: #4b69c6">tools/test-all.sh           </span><span style="color: #74747c">#</span><span style="color: #74747c"> Python, Node.js, C 를 적합성 사례에 대고</span>
+<span style="color: #4b69c6">tools/test-all.sh</span> --fuzz    <span style="color: #74747c">#</span><span style="color: #74747c"> 아래의 차분 퍼즈까지</span></code></pre><h2 id="차분-퍼즈">차분 퍼즈<a class="anchor" href="#차분-퍼즈" aria-hidden="true">#</a></h2><p><code>tools/difffuzz.py [반복 수] [시드]</code> 는 적합성 사례를 변형하고 토큰을 무작위로 섞어 만든 입력을 세 구현에 모두 넣습니다. 셋은 같은 덤프, 또는 같은 오류 <strong>코드·줄·열</strong>을 내야 합니다. 어긋난 입력은 다시 돌려 볼 수 있게 <code>build/fuzz/</code> 에 남습니다. <code>cc</code> 와 <code>node</code> 가 경로에 있어야 합니다.</p><h2 id="릴리스-만들기">릴리스 만들기<a class="anchor" href="#릴리스-만들기" aria-hidden="true">#</a></h2><ol><li><code>c/include/lowstruct.h</code>, <code>js/package.json</code>, <code>js/src/index.js</code>, <code>python/pyproject.toml</code>, <code>python/lowstruct/__init__.py</code>, 명세의 판 번호를 고치고, <code>CHANGELOG.md</code> 항목을 그 판 아래로 옮깁니다.</li><li>이 머신에서(<code>cd c &amp;&amp; ../build/nob</code>), 그리고 MinGW-w64 가 있는 곳에서 Windows 용으로(<code>../build/nob windows</code>) 빌드하고, Windows 에서 두 시험 프로그램을 적합성 파일과 함께 돌립니다.</li><li><code>tools/site/build-site.sh</code> 가 <code>docs/</code> 의 웹 매뉴얼과 <code>build/site/</code> 의 매뉴얼 PDF 둘을 다시 만듭니다(Typst 와 스크립트에 적힌 글꼴 필요). PDF 는 릴리스에 붙입니다.</li><li><code>tools/package.sh</code> 가 C 묶음, Node.js·Python 설치 zip 팩, <code>SHA256SUMS</code> 를 <code>build/dist/</code> 에 씁니다. 패키지 레지스트리에는 아무것도 올리지 않습니다.</li></ol><h2 id="규칙을-더하거나-결함을-고칠-때">규칙을 더하거나 결함을 고칠 때<a class="anchor" href="#규칙을-더하거나-결함을-고칠-때" aria-hidden="true">#</a></h2><ol><li>먼저 <code>conformance/</code> 에 사례를 더합니다. 수용 사례면 <code>.dump</code> 와 함께, 거부 사례면 <code>rem expect</code> 줄과 함께.</li><li>세 구현이 <code>tools/test-all.sh</code> 를 통과하게 합니다. 세 구현은 일부러 같은 순서(파일 검사, 파일 전체의 토큰, 문장)로 짜여 있어서, 고치는 모양도 대개 셋이 비슷합니다.</li><li><code>tools/test-all.sh --fuzz</code> 를 돌리고, C 는 <code>-fsanitize=address,undefined</code> 로 지어 봅니다.</li><li>명세를 영문으로 고치고, 그다음 한국어 번역을 고칩니다.</li></ol><p>기대 덤프는 손으로 쓰거나, 한 구현으로 뽑은 뒤 한 줄씩 확인합니다. 시험받는 코드가 만든 덤프는 그것만으로는 아무것도 증명하지 않습니다.</p><h2 id="네-번째-구현을-쓸-때">네 번째 구현을 쓸 때<a class="anchor" href="#네-번째-구현을-쓸-때" aria-hidden="true">#</a></h2><p>명세를 읽고, 파서를 <code>conformance/</code> 에 대고 돌리십시오. 자주 틀리는 곳은 이렇습니다.</p><ul><li>수 갈래의 순서(십육진 부동소수, 십진 부동소수, 십육진, 이진, 십진)와, 수 바로 뒤에 영문자·숫자·<code>_</code> 가 오면 안 된다는 규칙</li><li>문자열은 먼저 바이트로 만들고, 그다음에 접두사가 바이트·UTF-16 유닛·코드포인트를 고릅니다</li><li>십육진 부동소수는 서브노멀까지 포함해 가장 가까운 짝수로 반올림해야 합니다</li><li>열은 바이트도 UTF-16 유닛도 아닌 코드포인트로 셉니다</li><li>파일 어디에 있든 어휘 오류가 그보다 앞의 구조 오류보다 먼저입니다</li><li>맨 앞의 BOM 은 오류입니다 — 어떤 디코더는 조용히 떼어 버립니다</li><li><code>__proto__</code> 같은 키도 평범한 이름입니다</li></ul>
+<div class="nav"><a href="c.html">← C 라이브러리</a><a href="spec.html">명세 →</a></div>
+</div></main>
+</div>
+<script>(function(){var b=document.querySelector('.here-btn'),p=document.getElementById('here-panel');function open(o){if(!p)return;p.hidden=!o;if(b)b.setAttribute('aria-expanded',o);}if(b)b.addEventListener('click',function(){open(p.hidden);});if(p)p.addEventListener('click',function(e){if(e.target.tagName==='A'&&(e.target.getAttribute('href')||'').charAt(0)==='#')open(false);});document.addEventListener('keydown',function(e){if(e.key==='Escape')open(false);});var box=document.getElementById('setbox'),so=document.getElementById('set-open');if(!box||!so)return;var r=document.documentElement;function load(){try{return JSON.parse(localStorage.getItem('lows-read')||'{}');}catch(e){return {};}}function save(s){try{localStorage.setItem('lows-read',JSON.stringify(s));}catch(e){}}function css(n){return getComputedStyle(r).getPropertyValue(n).trim();}function hex(v){var m=v.match(/^rgba?\((\d+)[ ,]+(\d+)[ ,]+(\d+)/);if(!m)return v.charAt(0)==='#'?v:'#000000';return '#'+[1,2,3].map(function(i){return ('0'+parseInt(m[i],10).toString(16)).slice(-2);}).join('');}function paint(){var s=load();document.getElementById('s-width').checked=!!s.width;var t=s.theme||'auto';[].forEach.call(box.querySelectorAll('.segb'),function(x){x.setAttribute('aria-pressed',x.dataset.theme===t);});document.getElementById('s-fg').value=s.fg||hex(css('--fg'));document.getElementById('s-bg').value=s.bg||hex(css('--bg'));document.getElementById('s-link').value=s.link||hex(css('--link'));}so.addEventListener('click',function(){box.hidden=!box.hidden;so.setAttribute('aria-expanded',!box.hidden);if(!box.hidden)paint();});document.getElementById('s-width').addEventListener('change',function(){var s=load();s.width=this.checked;save(s);if(s.width)r.setAttribute('data-measure','on');else r.removeAttribute('data-measure');});[].forEach.call(box.querySelectorAll('.segb'),function(x){x.addEventListener('click',function(){var s=load();s.theme=x.dataset.theme;delete s.fg;delete s.bg;delete s.link;save(s);['--fg','--bg','--link'].forEach(function(n){r.style.removeProperty(n);});if(s.theme==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',s.theme);setTimeout(paint,0);});});[['s-fg','--fg','fg'],['s-bg','--bg','bg'],['s-link','--link','link']].forEach(function(a){document.getElementById(a[0]).addEventListener('input',function(){var s=load();s[a[2]]=this.value;save(s);r.style.setProperty(a[1],this.value);});});})();</script>
+<script>
+(function(){
+  var q=document.getElementById('q'), out=document.getElementById('qr');
+  if(!q||!out) return;
+  var data=null, NONE="\ucc3e\uc740 \uac83\uc774 \uc5c6\uc2b5\ub2c8\ub2e4";
+  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+  function run(){
+    var v=q.value.trim().toLowerCase();
+    out.innerHTML='';
+    if(!v||!data) return;
+    var exact=[], starts=[], rest=[];
+    for(var i=0;i<data.length;i++){
+      var name=data[i][0].toLowerCase(), at=name.indexOf(v);
+      if(at<0) continue;
+      if(name===v) exact.push(data[i]);
+      else if(at===0) starts.push(data[i]);
+      else rest.push(data[i]);
+    }
+    var hits=exact.concat(starts,rest).slice(0,40);
+    if(!hits.length){ out.innerHTML='<li>'+NONE+'</li>'; return; }
+    out.innerHTML=hits.map(function(h){
+      var label=h[3]==='fn' ? '<code>'+esc(h[0])+'</code>' : esc(h[0]);
+      return '<li><a href="'+h[1]+'">'+label+'</a>'+
+             (h[2]?'<span class="where">'+esc(h[2])+'</span>':'')+'</li>';
+    }).join('');
+  }
+  q.addEventListener('input',function(){
+    if(data){ run(); return; }
+    fetch('search-index.json').then(function(r){return r.json();})
+      .then(function(j){ data=j; run(); })
+      .catch(function(){ out.innerHTML='<li>'+NONE+'</li>'; });
+  });
+})();
+</script>
+</body>
+</html>

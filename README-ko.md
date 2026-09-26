@@ -2,6 +2,8 @@
 
 **lowstruct v0.0.1** — [Node.js·Python 설치 팩, C 라이브러리](https://github.com/rubidus-api/lowstruct/releases/tag/v0.0.1) · C 라이브러리: [Linux x86_64 (.tar.gz)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-linux-x86_64.tar.gz) · [Windows x86_64 (.zip)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-windows-x86_64.zip) · [모든 판](https://github.com/rubidus-api/lowstruct/releases)
 
+**웹에서 읽기** — [English](https://rubidus-api.github.io/lowstruct/en/) · [한국어](https://rubidus-api.github.io/lowstruct/ko/) · 매뉴얼과 명세
+
 [English](README.md) · **한국어**
 
 작고 엄격한 설정 파일 형식(`.lows`)과, 하나의 적합성 사례를 함께 통과하는 독립된 파서 셋 — **C**, **Node.js**,
@@ -39,7 +41,8 @@ windir "C:\\Windows" .
 | 경로 | 내용 |
 |---|---|
 | [`spec/`](spec/lowstruct.ko.md) | 명세 판 0.0.1 — 영문이 규범이고 한국어는 번역 |
-| [`manual/`](manual/README.md) · [`manual-ko/`](manual-ko/README.md) | 매뉴얼: 파일 쓰기, 세 라이브러리, 구현하는 사람을 위한 내용 |
+| [`manual/`](manual/README.md) · [`manual-ko/`](manual-ko/README.md) | 매뉴얼: 파일 쓰기, 세 라이브러리, 구현하는 사람을 위한 내용 — [웹에서도](https://rubidus-api.github.io/lowstruct/) |
+| `docs/` | GitHub Pages 가 내보내는 웹 매뉴얼. `tools/site/build-site.sh` 가 생성합니다 |
 | [`conformance/`](manual-ko/implementers.md) | 정규 덤프가 딸린 수용 사례, 기대 코드가 적힌 거부 사례 |
 | [`python/`](manual-ko/python.md) | Python 3.10+ 패키지, 의존성 없음 |
 | [`js/`](manual-ko/javascript.md) | Node.js 20+ ES 모듈, 의존성 없음 |

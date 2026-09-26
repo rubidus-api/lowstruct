@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The manual — lowstruct manual</title>
+<link rel="stylesheet" href="manual.css">
+<script>(function(){try{var s=JSON.parse(localStorage.getItem('lows-read')||'{}');var r=document.documentElement;if(s.theme&&s.theme!=='auto')r.setAttribute('data-theme',s.theme);if(s.fg)r.style.setProperty('--fg',s.fg);if(s.bg)r.style.setProperty('--bg',s.bg);if(s.link)r.style.setProperty('--link',s.link);if(s.width)r.setAttribute('data-measure','on');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<div class="bar"><strong><a href="index.html">lowstruct manual</a></strong><button class="here-btn" type="button" aria-expanded="false" aria-controls="here-panel">The manual <span class="caret">▾</span></button><span class="bar-nav"><span class="off" aria-hidden="true">←</span><a href="index.html" title="Contents" aria-label="Contents">↑</a><a href="guide.html" title="Next" aria-label="Next">→</a></span></div>
+<div id="here-panel" class="here-panel" hidden><div class="tools"><span class="ver">0.0.1</span><button class="tool" type="button" id="set-open" aria-expanded="false">⚙ Settings</button><a class="tool" href="../ko/index.html">한국어</a><a class="tool" href="https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-en-manual.pdf">⤓ PDF</a><a class="tool" href="https://github.com/rubidus-api/lowstruct" title="This project on GitHub">⌥ Repo</a><a class="tool" href="https://rubidus-api.github.io/" title="rubidus-api.github.io — every published project">⌂ All projects</a><a class="tool" href="https://github.com/rubidus-api" title="github.com/rubidus-api — every repository">≡ All repos</a></div><div class="setbox" id="setbox" hidden><label class="setrow"><input type="checkbox" id="s-width"><span>Limit line width</span></label><div class="setrow"><span class="setlbl">Theme</span><span class="seg"><button type="button" class="segb" data-theme="auto">System</button><button type="button" class="segb" data-theme="light">Light</button><button type="button" class="segb" data-theme="dark">Dark</button></span></div><div class="setrow"><span class="setlbl">Colours</span><label class="col"><span>Text</span><input type="color" id="s-fg"></label><label class="col"><span>Background</span><input type="color" id="s-bg"></label><label class="col"><span>Link</span><input type="color" id="s-link"></label></div><p class="setnote">Settings are kept in this browser only.</p></div><div class="search"><label class="setlbl" for="q">Search</label> <input type="search" id="q" placeholder="Find a C function or a heading" autocomplete="off"><p class="hint">Searches the C API and every heading — not the full text.</p><ul id="qr"></ul></div></div>
+<div class="page">
+<main id="content"><div class="content">
+<div class="masthead">0.0.1 · generated from the Markdown manual</div>
+<h1 id="lowstruct-manual">lowstruct Manual<a class="anchor" href="#lowstruct-manual" aria-hidden="true">#</a></h1><p><strong>English</strong> · <a href="../ko/index.html">한국어</a></p><div class="tblwrap"><table><tr><td><strong>Page</strong></td><td><strong>For</strong></td></tr><tr><td><a href="guide.html">Writing lowstruct files</a></td><td>everyone who edits a <code>.lows</code> file: statements, blocks, lists, strings, numbers, and the errors you will meet</td></tr><tr><td><a href="python.html">Python library</a></td><td>reading <code>.lows</code> files from Python</td></tr><tr><td><a href="javascript.html">Node.js library</a></td><td>reading <code>.lows</code> files from JavaScript</td></tr><tr><td><a href="c.html">C library</a></td><td>reading <code>.lows</code> files from C, on proven_c_lib</td></tr><tr><td><a href="implementers.html">For implementers</a></td><td>the conformance suite, the canonical dump, the differential fuzz</td></tr></table></div><p>The normative definition is the <a href="spec.html">specification</a>. Where this manual and the specification disagree, the specification is right.</p>
+<div class="nav"><span></span><a href="guide.html">Writing lowstruct files →</a></div>
+</div></main>
+</div>
+<script>(function(){var b=document.querySelector('.here-btn'),p=document.getElementById('here-panel');function open(o){if(!p)return;p.hidden=!o;if(b)b.setAttribute('aria-expanded',o);}if(b)b.addEventListener('click',function(){open(p.hidden);});if(p)p.addEventListener('click',function(e){if(e.target.tagName==='A'&&(e.target.getAttribute('href')||'').charAt(0)==='#')open(false);});document.addEventListener('keydown',function(e){if(e.key==='Escape')open(false);});var box=document.getElementById('setbox'),so=document.getElementById('set-open');if(!box||!so)return;var r=document.documentElement;function load(){try{return JSON.parse(localStorage.getItem('lows-read')||'{}');}catch(e){return {};}}function save(s){try{localStorage.setItem('lows-read',JSON.stringify(s));}catch(e){}}function css(n){return getComputedStyle(r).getPropertyValue(n).trim();}function hex(v){var m=v.match(/^rgba?\((\d+)[ ,]+(\d+)[ ,]+(\d+)/);if(!m)return v.charAt(0)==='#'?v:'#000000';return '#'+[1,2,3].map(function(i){return ('0'+parseInt(m[i],10).toString(16)).slice(-2);}).join('');}function paint(){var s=load();document.getElementById('s-width').checked=!!s.width;var t=s.theme||'auto';[].forEach.call(box.querySelectorAll('.segb'),function(x){x.setAttribute('aria-pressed',x.dataset.theme===t);});document.getElementById('s-fg').value=s.fg||hex(css('--fg'));document.getElementById('s-bg').value=s.bg||hex(css('--bg'));document.getElementById('s-link').value=s.link||hex(css('--link'));}so.addEventListener('click',function(){box.hidden=!box.hidden;so.setAttribute('aria-expanded',!box.hidden);if(!box.hidden)paint();});document.getElementById('s-width').addEventListener('change',function(){var s=load();s.width=this.checked;save(s);if(s.width)r.setAttribute('data-measure','on');else r.removeAttribute('data-measure');});[].forEach.call(box.querySelectorAll('.segb'),function(x){x.addEventListener('click',function(){var s=load();s.theme=x.dataset.theme;delete s.fg;delete s.bg;delete s.link;save(s);['--fg','--bg','--link'].forEach(function(n){r.style.removeProperty(n);});if(s.theme==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',s.theme);setTimeout(paint,0);});});[['s-fg','--fg','fg'],['s-bg','--bg','bg'],['s-link','--link','link']].forEach(function(a){document.getElementById(a[0]).addEventListener('input',function(){var s=load();s[a[2]]=this.value;save(s);r.style.setProperty(a[1],this.value);});});})();</script>
+<script>
+(function(){
+  var q=document.getElementById('q'), out=document.getElementById('qr');
+  if(!q||!out) return;
+  var data=null, NONE="Nothing found";
+  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+  function run(){
+    var v=q.value.trim().toLowerCase();
+    out.innerHTML='';
+    if(!v||!data) return;
+    var exact=[], starts=[], rest=[];
+    for(var i=0;i<data.length;i++){
+      var name=data[i][0].toLowerCase(), at=name.indexOf(v);
+      if(at<0) continue;
+      if(name===v) exact.push(data[i]);
+      else if(at===0) starts.push(data[i]);
+      else rest.push(data[i]);
+    }
+    var hits=exact.concat(starts,rest).slice(0,40);
+    if(!hits.length){ out.innerHTML='<li>'+NONE+'</li>'; return; }
+    out.innerHTML=hits.map(function(h){
+      var label=h[3]==='fn' ? '<code>'+esc(h[0])+'</code>' : esc(h[0]);
+      return '<li><a href="'+h[1]+'">'+label+'</a>'+
+             (h[2]?'<span class="where">'+esc(h[2])+'</span>':'')+'</li>';
+    }).join('');
+  }
+  q.addEventListener('input',function(){
+    if(data){ run(); return; }
+    fetch('search-index.json').then(function(r){return r.json();})
+      .then(function(j){ data=j; run(); })
+      .catch(function(){ out.innerHTML='<li>'+NONE+'</li>'; });
+  });
+})();
+</script>
+</body>
+</html>

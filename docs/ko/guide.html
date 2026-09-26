@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lowstruct 파일 쓰기 — lowstruct 매뉴얼</title>
+<link rel="stylesheet" href="manual.css">
+<script>(function(){try{var s=JSON.parse(localStorage.getItem('lows-read')||'{}');var r=document.documentElement;if(s.theme&&s.theme!=='auto')r.setAttribute('data-theme',s.theme);if(s.fg)r.style.setProperty('--fg',s.fg);if(s.bg)r.style.setProperty('--bg',s.bg);if(s.link)r.style.setProperty('--link',s.link);if(s.width)r.setAttribute('data-measure','on');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip" href="#content">본문으로 건너뛰기</a>
+<div class="bar"><strong><a href="index.html">lowstruct 매뉴얼</a></strong><button class="here-btn" type="button" aria-expanded="false" aria-controls="here-panel">lowstruct 파일 쓰기 <span class="caret">▾</span></button><span class="bar-nav"><a href="index.html" title="이전" aria-label="이전">←</a><a href="index.html" title="목차" aria-label="목차">↑</a><a href="python.html" title="다음" aria-label="다음">→</a></span></div>
+<div id="here-panel" class="here-panel" hidden><div class="tools"><span class="ver">0.0.1</span><button class="tool" type="button" id="set-open" aria-expanded="false">⚙ 설정</button><a class="tool" href="../en/guide.html">English</a><a class="tool" href="https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-ko-manual.pdf">⤓ PDF</a><a class="tool" href="https://github.com/rubidus-api/lowstruct" title="이 프로젝트의 GitHub 저장소">⌥ 저장소</a><a class="tool" href="https://rubidus-api.github.io/" title="rubidus-api.github.io — 공개된 모든 프로젝트">⌂ 전체 사이트</a><a class="tool" href="https://github.com/rubidus-api" title="github.com/rubidus-api — 모든 저장소">≡ 저장소 목록</a></div><div class="setbox" id="setbox" hidden><label class="setrow"><input type="checkbox" id="s-width"><span>가로폭 제한</span></label><div class="setrow"><span class="setlbl">테마</span><span class="seg"><button type="button" class="segb" data-theme="auto">시스템</button><button type="button" class="segb" data-theme="light">밝게</button><button type="button" class="segb" data-theme="dark">어둡게</button></span></div><div class="setrow"><span class="setlbl">색</span><label class="col"><span>글자</span><input type="color" id="s-fg"></label><label class="col"><span>배경</span><input type="color" id="s-bg"></label><label class="col"><span>링크</span><input type="color" id="s-link"></label></div><p class="setnote">설정은 이 브라우저에만 저장됩니다.</p></div><div class="search"><label class="setlbl" for="q">검색</label> <input type="search" id="q" placeholder="C 함수나 제목으로 찾기" autocomplete="off"><p class="hint">C API 와 모든 제목에서 찾습니다 — 본문 전문은 아닙니다.</p><ul id="qr"></ul></div><div class="here-head"><strong>이 페이지 안에서</strong></div><div class="here-body"><a href="#문장">문장</a><a href="#블록">블록</a><a href="#목록">목록</a><a href="#주석">주석</a><a href="#수">수</a><a href="#문자열">문자열</a><a href="#만나게-될-오류">만나게 될 오류</a></div></div>
+<div class="page">
+<main id="content"><div class="content">
+<div class="masthead">0.0.1 · 마크다운 매뉴얼에서 생성됨</div>
+<h1 id="lowstruct-파일-쓰기">lowstruct 파일 쓰기<a class="anchor" href="#lowstruct-파일-쓰기" aria-hidden="true">#</a></h1><p><a href="../en/guide.html">English</a> · <strong>한국어</strong></p><blockquote>정본은 영문 매뉴얼이고, 이 문서는 그 번역입니다.</blockquote><p>이 쪽은 예제로 형식을 익히게 합니다. 규칙은 <a href="spec.html">명세</a>가 정합니다.</p><h2 id="문장">문장<a class="anchor" href="#문장" aria-hidden="true">#</a></h2><p>문장은 <strong>경로</strong>(이름 하나 이상), 그 <strong>값</strong>(리터럴), 그리고 마침표입니다.</p><pre><code data-lang="lowstruct">title "my-app" .
+server port 8080 .
+server debug false .</code></pre><p>경로는 첫 리터럴에서 끝나므로 <code>=</code> 가 필요 없습니다. 두 <code>server …</code> 문장은 <code>port</code> 와 <code>debug</code> 를 담은 <code>server</code> 가지를 만듭니다.</p><p>이름은 ASCII 영문자·숫자·<code>_</code> 로 이루어지고 영문자나 <code>_</code> 로 시작하며, 대소문자를 가립니다. 예약어는 일곱 개입니다: <code>rem note text do end true false</code>.</p><h2 id="블록">블록<a class="anchor" href="#블록" aria-hidden="true">#</a></h2><p><code>do … end</code> 는 공통 앞부분을 한 번만 쓰게 합니다. 아래 두 파일은 같은 나무를 만듭니다.</p><pre><code data-lang="lowstruct">server do
+  host "0.0.0.0" .
+  tls do
+    cert "a.pem" .
+  end
+end</code></pre><pre><code data-lang="lowstruct">server host "0.0.0.0" .
+server tls cert "a.pem" .</code></pre><p>블록으로 연 경로는 그 블록의 것입니다. 나중에 다시 열 수도, 블록 밖의 평평한 문장으로 더할 수도 없습니다 (<code>E-LOWS-SEALED</code>). <code>server</code> 에 관한 것은 모두 한 자리에 있습니다. 블록은 64 겹까지 겹칩니다.</p><p>같은 종류가 여럿이면 각각 이름을 붙입니다.</p><pre><code data-lang="lowstruct">remote origin do
+  url "https://example.invalid/r.git" .
+end
+remote backup do
+  url "https://example.invalid/b.git" .
+end</code></pre><h2 id="목록">목록<a class="anchor" href="#목록" aria-hidden="true">#</a></h2><p>값이 여럿이면 목록입니다. 괄호도 쉼표도 없습니다. 긴 목록은 여러 줄에 걸쳐 써도 되고, 마침표가 끝을 정합니다.</p><pre><code data-lang="lowstruct">ports 80 443 8443 .
+allow
+  "10.0.0.0/8"
+  "192.168.0.0/16"
+  .</code></pre><p>한 문장의 값은 모두 한 종류입니다. <code>1 2.0</code> 은 정수와 부동소수가 섞여서 거부됩니다. 값이 없는 문장(<code>feature_x .</code>)은 빈 목록이며, 그 키가 있다는 표시입니다.</p><p>키는 한 번만 씁니다. 같은 문장을 되풀이하면 목록이 되는 것이 아니라 오류입니다(<code>E-LOWS-DUP</code>).</p><h2 id="주석">주석<a class="anchor" href="#주석" aria-hidden="true">#</a></h2><pre><code data-lang="lowstruct">rem 주석은 줄 끝까지입니다
+port 8080 .   rem 문장 뒤에도 됩니다
+
+note END
+여러 줄 주석입니다.
+END 만 있는 줄까지는 무엇을 써도 됩니다.
+END</code></pre><h2 id="수">수<a class="anchor" href="#수" aria-hidden="true">#</a></h2><div class="tblwrap"><table><tr><td><strong>적는 것</strong></td><td><strong>뜻</strong></td></tr><tr><td><code>42</code> <code>-5</code> <code>+5</code> <code>1_000_000</code></td><td>십진 정수. <code>_</code> 로 자릿수를 나눕니다</td></tr><tr><td><code>0x2A</code> <code>0b101010</code></td><td>십육진·이진 정수</td></tr><tr><td><code>0755</code></td><td>755 — 팔진 표기는 없습니다</td></tr><tr><td><code>1.5</code> <code>1e3</code> <code>1.5e-3</code></td><td>십진 부동소수. 소수점 앞뒤에 숫자가 있어야 합니다</td></tr><tr><td><code>0x1.8p1</code></td><td>십육진 부동소수(3.0)</td></tr></table></div><p>정수는 −2⁶³ 부터 2⁶⁴−1 까지입니다. 부동소수는 IEEE 754 double 이며 <code>inf</code>·<code>nan</code> 은 없습니다. <code>true</code> 와 <code>false</code> 는 불리언입니다.</p><h2 id="문자열">문자열<a class="anchor" href="#문자열" aria-hidden="true">#</a></h2><p><code>"…"</code> 가 문자열입니다. 한 줄 안에서 닫혀야 합니다. 역슬래시는 닫힌 이스케이프 집합 가운데 하나를 시작합니다.</p><div class="tblwrap"><table><tr><td><strong>이스케이프</strong></td><td><strong>값</strong></td></tr><tr><td><code>\\</code> <code>\"</code> <code>\'</code></td><td>역슬래시, 큰따옴표, 작은따옴표</td></tr><tr><td><code>\n</code> <code>\t</code> <code>\r</code> <code>\0</code> <code>\a</code> <code>\b</code> <code>\f</code> <code>\v</code></td><td>제어 문자</td></tr><tr><td><code>\xNN</code></td><td>바이트 하나</td></tr><tr><td><code>\uXXXX</code> <code>\UXXXXXXXX</code></td><td>유니코드 코드포인트</td></tr></table></div><p>그 밖의 역슬래시는 오류입니다(<code>E-LOWS-ESCAPE</code>). 잘못 쓴 역슬래시가 조용히 다른 값이 되는 일은 없습니다.</p><h3 id="윈도우-경로">윈도우 경로<a class="anchor" href="#윈도우-경로" aria-hidden="true">#</a></h3><p>역슬래시는 언제나 두 번 씁니다.</p><pre><code data-lang="lowstruct">windir "C:\\Windows" .
+share "\\\\server\\share" .</code></pre><p><code>"C:\temp"</code> 는 오류가 아닙니다. <code>\t</code> 가 탭 이스케이프이기 때문입니다. 하지만 뜻한 경로도 아닙니다. 역슬래시는 늘 두 번 쓰십시오.</p><h3 id="여러-줄과-원문">여러 줄과 원문<a class="anchor" href="#여러-줄과-원문" aria-hidden="true">#</a></h3><p><code>text</code> heredoc 은 본문을 적힌 그대로, 이스케이프 없이 담습니다. 태그만 있는 줄에서 끝납니다.</p><pre><code data-lang="lowstruct">banner text END
+Welcome.
+  Indentation and \backslashes stay as they are.
+END
+.</code></pre><p>마지막 본문 줄 뒤의 줄바꿈은 값에 들지 않습니다. heredoc 도 다른 값과 같으므로 문장은 여전히 마침표로 끝납니다.</p><h3 id="바이트-문자열과-접두사">바이트 문자열과 접두사<a class="anchor" href="#바이트-문자열과-접두사" aria-hidden="true">#</a></h3><p>접두사 없는 <code>"…"</code> 는 <strong>바이트</strong>를 담습니다. <code>"\xE9"</code> 는 유효한 UTF-8 이 아닌 바이트 하나입니다. 라이브러리는 바이트와 함께 UTF-8 텍스트로 푸는 도우미를 줍니다. 접두사 둘이 문자열이 담는 것을 바꿉니다.</p><div class="tblwrap"><table><tr><td><strong>리터럴</strong></td><td><strong>원소</strong></td></tr><tr><td><code>"é"</code></td><td>바이트(2)</td></tr><tr><td><code>u"é"</code></td><td>UTF-16 코드 유닛(1)</td></tr><tr><td><code>U"é"</code></td><td>코드포인트(1)</td></tr></table></div><p><code>'a'</code>, <code>u'é'</code>, <code>U'😀'</code> 같은 문자 리터럴은 같은 종류의 원소를 정확히 하나 담습니다.</p><h2 id="만나게-될-오류">만나게 될 오류<a class="anchor" href="#만나게-될-오류" aria-hidden="true">#</a></h2><p>거부할 때는 줄, 열(글자 단위), 코드를 알려 줍니다.</p><div class="tblwrap"><table><tr><td><strong>코드</strong></td><td><strong>흔한 원인</strong></td><td><strong>고치는 법</strong></td></tr><tr><td><code>E-LOWS-UNCLOSED</code></td><td>빠진 <code>.</code>, <code>end</code>, 닫는 따옴표, heredoc 태그</td><td>채워 넣습니다</td></tr><tr><td><code>E-LOWS-CHARSET</code></td><td>문자열 밖의 <code>=</code>, <code>[</code>, <code>#</code>, <code>,</code> 나 비 ASCII 글자</td><td>lowstruct 는 이것들을 쓰지 않습니다</td></tr><tr><td><code>E-LOWS-ESCAPE</code></td><td><code>"\q"</code>, <code>"\101"</code>(팔진 없음), 잘못된 <code>\u</code></td><td>위 표의 이스케이프를 씁니다</td></tr><tr><td><code>E-LOWS-NUMBER</code></td><td>숫자 없는 <code>0x</code>, <code>0o7</code>, <code>1__0</code></td><td>수를 온전히 씁니다</td></tr><tr><td><code>E-LOWS-MIX</code></td><td><code>1 "one" .</code> 이나 <code>1 2.0 .</code></td><td>한 문장에는 한 종류</td></tr><tr><td><code>E-LOWS-ORDER</code></td><td><code>a 1 b 2 .</code></td><td>경로마다 문장 하나</td></tr><tr><td><code>E-LOWS-DUP</code></td><td>같은 키를 두 번</td><td>한 번만 씁니다</td></tr><tr><td><code>E-LOWS-SHAPE</code></td><td><code>a 1 .</code> 과 <code>a b 2 .</code> 을 함께</td><td>키는 값이나 키 가운데 하나만 담습니다</td></tr><tr><td><code>E-LOWS-SEALED</code></td><td>블록을 다시 열거나 밖에서 더함</td><td>블록의 키는 블록 안에 둡니다</td></tr><tr><td><code>E-LOWS-TAG</code></td><td><code>text</code>·<code>note</code> 를 키로 씀, 잘못된 heredoc 첫 줄</td><td>키 이름을 바꿉니다</td></tr><tr><td><code>E-LOWS-BOM</code> · <code>E-LOWS-CR</code> · <code>E-LOWS-UTF8</code></td><td>파일 인코딩</td><td>BOM 없는 UTF-8, 줄 끝은 LF 나 CRLF 로 저장합니다</td></tr></table></div><p>코드 전체와 각 코드가 가리키는 자리는 명세 5 절에 있습니다.</p>
+<div class="nav"><a href="index.html">← 매뉴얼</a><a href="python.html">Python 라이브러리 →</a></div>
+</div></main>
+</div>
+<script>(function(){var b=document.querySelector('.here-btn'),p=document.getElementById('here-panel');function open(o){if(!p)return;p.hidden=!o;if(b)b.setAttribute('aria-expanded',o);}if(b)b.addEventListener('click',function(){open(p.hidden);});if(p)p.addEventListener('click',function(e){if(e.target.tagName==='A'&&(e.target.getAttribute('href')||'').charAt(0)==='#')open(false);});document.addEventListener('keydown',function(e){if(e.key==='Escape')open(false);});var box=document.getElementById('setbox'),so=document.getElementById('set-open');if(!box||!so)return;var r=document.documentElement;function load(){try{return JSON.parse(localStorage.getItem('lows-read')||'{}');}catch(e){return {};}}function save(s){try{localStorage.setItem('lows-read',JSON.stringify(s));}catch(e){}}function css(n){return getComputedStyle(r).getPropertyValue(n).trim();}function hex(v){var m=v.match(/^rgba?\((\d+)[ ,]+(\d+)[ ,]+(\d+)/);if(!m)return v.charAt(0)==='#'?v:'#000000';return '#'+[1,2,3].map(function(i){return ('0'+parseInt(m[i],10).toString(16)).slice(-2);}).join('');}function paint(){var s=load();document.getElementById('s-width').checked=!!s.width;var t=s.theme||'auto';[].forEach.call(box.querySelectorAll('.segb'),function(x){x.setAttribute('aria-pressed',x.dataset.theme===t);});document.getElementById('s-fg').value=s.fg||hex(css('--fg'));document.getElementById('s-bg').value=s.bg||hex(css('--bg'));document.getElementById('s-link').value=s.link||hex(css('--link'));}so.addEventListener('click',function(){box.hidden=!box.hidden;so.setAttribute('aria-expanded',!box.hidden);if(!box.hidden)paint();});document.getElementById('s-width').addEventListener('change',function(){var s=load();s.width=this.checked;save(s);if(s.width)r.setAttribute('data-measure','on');else r.removeAttribute('data-measure');});[].forEach.call(box.querySelectorAll('.segb'),function(x){x.addEventListener('click',function(){var s=load();s.theme=x.dataset.theme;delete s.fg;delete s.bg;delete s.link;save(s);['--fg','--bg','--link'].forEach(function(n){r.style.removeProperty(n);});if(s.theme==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',s.theme);setTimeout(paint,0);});});[['s-fg','--fg','fg'],['s-bg','--bg','bg'],['s-link','--link','link']].forEach(function(a){document.getElementById(a[0]).addEventListener('input',function(){var s=load();s[a[2]]=this.value;save(s);r.style.setProperty(a[1],this.value);});});})();</script>
+<script>
+(function(){
+  var q=document.getElementById('q'), out=document.getElementById('qr');
+  if(!q||!out) return;
+  var data=null, NONE="\ucc3e\uc740 \uac83\uc774 \uc5c6\uc2b5\ub2c8\ub2e4";
+  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+  function run(){
+    var v=q.value.trim().toLowerCase();
+    out.innerHTML='';
+    if(!v||!data) return;
+    var exact=[], starts=[], rest=[];
+    for(var i=0;i<data.length;i++){
+      var name=data[i][0].toLowerCase(), at=name.indexOf(v);
+      if(at<0) continue;
+      if(name===v) exact.push(data[i]);
+      else if(at===0) starts.push(data[i]);
+      else rest.push(data[i]);
+    }
+    var hits=exact.concat(starts,rest).slice(0,40);
+    if(!hits.length){ out.innerHTML='<li>'+NONE+'</li>'; return; }
+    out.innerHTML=hits.map(function(h){
+      var label=h[3]==='fn' ? '<code>'+esc(h[0])+'</code>' : esc(h[0]);
+      return '<li><a href="'+h[1]+'">'+label+'</a>'+
+             (h[2]?'<span class="where">'+esc(h[2])+'</span>':'')+'</li>';
+    }).join('');
+  }
+  q.addEventListener('input',function(){
+    if(data){ run(); return; }
+    fetch('search-index.json').then(function(r){return r.json();})
+      .then(function(j){ data=j; run(); })
+      .catch(function(){ out.innerHTML='<li>'+NONE+'</li>'; });
+  });
+})();
+</script>
+</body>
+</html>

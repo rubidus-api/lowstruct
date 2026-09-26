@@ -8,6 +8,12 @@ see `c/vendor/proven/LICENSE`. Its own notices (the clean-room float parser, and
 lowstruct compiles five of its files: `float_parse.c`, `float_decimal.c`, `heap.c`, `proven_sys_mem.c`,
 and uses `nob.h` for its C build script.
 
+## Web manual
+
+`tools/site/` is adapted from proven_c_lib's manual-site scripts (same author, MIT). The web manual under
+`docs/en/fonts/` and `docs/ko/fonts/` ships subsets of Noto Sans, Noto Serif, Noto Sans CJK KR (Google) and
+D2Coding (NAVER), all under the SIL Open Font License 1.1; see the `README.md` beside the fonts.
+
 ## Conformance case taken from Lowent
 
 `conformance/accept/08-lowent-pkg.lows` is the package manifest `pkg.low` of the Lowent language

@@ -55,7 +55,9 @@ tools/test-all.sh --fuzz    # 아래의 차분 퍼즈까지
    `python/lowstruct/__init__.py`, 명세의 판 번호를 고치고, `CHANGELOG.md` 항목을 그 판 아래로 옮깁니다.
 2. 이 머신에서(`cd c && ../build/nob`), 그리고 MinGW-w64 가 있는 곳에서 Windows 용으로(`../build/nob windows`) 빌드하고,
    Windows 에서 두 시험 프로그램을 적합성 파일과 함께 돌립니다.
-3. `tools/package.sh` 가 C 묶음, Node.js·Python 설치 zip 팩, `SHA256SUMS` 를 `build/dist/` 에 씁니다.
+3. `tools/site/build-site.sh` 가 `docs/` 의 웹 매뉴얼과 `build/site/` 의 매뉴얼 PDF 둘을 다시 만듭니다(Typst 와 스크립트에
+   적힌 글꼴 필요). PDF 는 릴리스에 붙입니다.
+4. `tools/package.sh` 가 C 묶음, Node.js·Python 설치 zip 팩, `SHA256SUMS` 를 `build/dist/` 에 씁니다.
    패키지 레지스트리에는 아무것도 올리지 않습니다.
 
 ## 규칙을 더하거나 결함을 고칠 때

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Writing lowstruct files — lowstruct manual</title>
+<link rel="stylesheet" href="manual.css">
+<script>(function(){try{var s=JSON.parse(localStorage.getItem('lows-read')||'{}');var r=document.documentElement;if(s.theme&&s.theme!=='auto')r.setAttribute('data-theme',s.theme);if(s.fg)r.style.setProperty('--fg',s.fg);if(s.bg)r.style.setProperty('--bg',s.bg);if(s.link)r.style.setProperty('--link',s.link);if(s.width)r.setAttribute('data-measure','on');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<div class="bar"><strong><a href="index.html">lowstruct manual</a></strong><button class="here-btn" type="button" aria-expanded="false" aria-controls="here-panel">Writing lowstruct files <span class="caret">▾</span></button><span class="bar-nav"><a href="index.html" title="Previous" aria-label="Previous">←</a><a href="index.html" title="Contents" aria-label="Contents">↑</a><a href="python.html" title="Next" aria-label="Next">→</a></span></div>
+<div id="here-panel" class="here-panel" hidden><div class="tools"><span class="ver">0.0.1</span><button class="tool" type="button" id="set-open" aria-expanded="false">⚙ Settings</button><a class="tool" href="../ko/guide.html">한국어</a><a class="tool" href="https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-en-manual.pdf">⤓ PDF</a><a class="tool" href="https://github.com/rubidus-api/lowstruct" title="This project on GitHub">⌥ Repo</a><a class="tool" href="https://rubidus-api.github.io/" title="rubidus-api.github.io — every published project">⌂ All projects</a><a class="tool" href="https://github.com/rubidus-api" title="github.com/rubidus-api — every repository">≡ All repos</a></div><div class="setbox" id="setbox" hidden><label class="setrow"><input type="checkbox" id="s-width"><span>Limit line width</span></label><div class="setrow"><span class="setlbl">Theme</span><span class="seg"><button type="button" class="segb" data-theme="auto">System</button><button type="button" class="segb" data-theme="light">Light</button><button type="button" class="segb" data-theme="dark">Dark</button></span></div><div class="setrow"><span class="setlbl">Colours</span><label class="col"><span>Text</span><input type="color" id="s-fg"></label><label class="col"><span>Background</span><input type="color" id="s-bg"></label><label class="col"><span>Link</span><input type="color" id="s-link"></label></div><p class="setnote">Settings are kept in this browser only.</p></div><div class="search"><label class="setlbl" for="q">Search</label> <input type="search" id="q" placeholder="Find a C function or a heading" autocomplete="off"><p class="hint">Searches the C API and every heading — not the full text.</p><ul id="qr"></ul></div><div class="here-head"><strong>On this page</strong></div><div class="here-body"><a href="#statements">Statements</a><a href="#blocks">Blocks</a><a href="#lists">Lists</a><a href="#comments">Comments</a><a href="#numbers">Numbers</a><a href="#strings">Strings</a><a href="#errors-you-will-meet">Errors you will meet</a></div></div>
+<div class="page">
+<main id="content"><div class="content">
+<div class="masthead">0.0.1 · generated from the Markdown manual</div>
+<h1 id="writing-lowstruct-files">Writing lowstruct Files<a class="anchor" href="#writing-lowstruct-files" aria-hidden="true">#</a></h1><p><strong>English</strong> · <a href="../ko/guide.html">한국어</a></p><p>This page teaches the format by example. The rules are defined in the <a href="spec.html">specification</a>.</p><h2 id="statements">Statements<a class="anchor" href="#statements" aria-hidden="true">#</a></h2><p>A statement is a <strong>path</strong> (one or more names), then its <strong>values</strong> (literals), then a full stop.</p><pre><code data-lang="lowstruct">title "my-app" .
+server port 8080 .
+server debug false .</code></pre><p>The path ends at the first literal, so no <code>=</code> is needed. The two <code>server …</code> statements build a <code>server</code> branch holding <code>port</code> and <code>debug</code>.</p><p>Names are ASCII letters, digits and <code>_</code>, starting with a letter or <code>_</code>, and are case-sensitive. Seven words are reserved: <code>rem note text do end true false</code>.</p><h2 id="blocks">Blocks<a class="anchor" href="#blocks" aria-hidden="true">#</a></h2><p><code>do … end</code> writes a common prefix once. These two files build the same tree:</p><pre><code data-lang="lowstruct">server do
+  host "0.0.0.0" .
+  tls do
+    cert "a.pem" .
+  end
+end</code></pre><pre><code data-lang="lowstruct">server host "0.0.0.0" .
+server tls cert "a.pem" .</code></pre><p>A path opened as a block belongs to that block. You cannot open it again later, or add to it with a flat statement outside it (<code>E-LOWS-SEALED</code>) — everything about <code>server</code> is in one place. Blocks nest up to 64 deep.</p><p>Several things of the same sort get names of their own:</p><pre><code data-lang="lowstruct">remote origin do
+  url "https://example.invalid/r.git" .
+end
+remote backup do
+  url "https://example.invalid/b.git" .
+end</code></pre><h2 id="lists">Lists<a class="anchor" href="#lists" aria-hidden="true">#</a></h2><p>Several values are a list. There are no brackets and no commas; a long list may span lines, and the full stop ends it.</p><pre><code data-lang="lowstruct">ports 80 443 8443 .
+allow
+  "10.0.0.0/8"
+  "192.168.0.0/16"
+  .</code></pre><p>All values of one statement are of one kind: <code>1 2.0</code> mixes an integer and a float and is rejected. A statement with no values (<code>feature_x .</code>) is an empty list — it records that the key is present.</p><p>A key is written once. Repeating a statement is an error (<code>E-LOWS-DUP</code>), not a way to build a list.</p><h2 id="comments">Comments<a class="anchor" href="#comments" aria-hidden="true">#</a></h2><pre><code data-lang="lowstruct">rem a comment runs to the end of the line
+port 8080 .   rem also after a statement
+
+note END
+A block comment.
+Anything goes here until a line holding only END.
+END</code></pre><h2 id="numbers">Numbers<a class="anchor" href="#numbers" aria-hidden="true">#</a></h2><div class="tblwrap"><table><tr><td><strong>Write</strong></td><td><strong>Means</strong></td></tr><tr><td><code>42</code> <code>-5</code> <code>+5</code> <code>1_000_000</code></td><td>decimal integers; <code>_</code> separates digits</td></tr><tr><td><code>0x2A</code> <code>0b101010</code></td><td>hexadecimal and binary integers</td></tr><tr><td><code>0755</code></td><td>755 — there is no octal</td></tr><tr><td><code>1.5</code> <code>1e3</code> <code>1.5e-3</code></td><td>decimal floats; a point needs digits on both sides</td></tr><tr><td><code>0x1.8p1</code></td><td>a hexadecimal float (3.0)</td></tr></table></div><p>Integers run from −2⁶³ to 2⁶⁴−1. Floats are IEEE 754 doubles; there is no <code>inf</code> or <code>nan</code>. <code>true</code> and <code>false</code> are booleans.</p><h2 id="strings">Strings<a class="anchor" href="#strings" aria-hidden="true">#</a></h2><p><code>"…"</code> is a string. It must close on its line. A backslash starts one of a closed set of escapes:</p><div class="tblwrap"><table><tr><td><strong>Escape</strong></td><td><strong>Value</strong></td></tr><tr><td><code>\\</code> <code>\"</code> <code>\'</code></td><td>backslash, double quote, single quote</td></tr><tr><td><code>\n</code> <code>\t</code> <code>\r</code> <code>\0</code> <code>\a</code> <code>\b</code> <code>\f</code> <code>\v</code></td><td>control characters</td></tr><tr><td><code>\xNN</code></td><td>one byte</td></tr><tr><td><code>\uXXXX</code> <code>\UXXXXXXXX</code></td><td>a Unicode code point</td></tr></table></div><p>Any other backslash sequence is an error (<code>E-LOWS-ESCAPE</code>); a stray backslash never silently becomes something else.</p><h3 id="windows-paths">Windows paths<a class="anchor" href="#windows-paths" aria-hidden="true">#</a></h3><p>Write every backslash twice:</p><pre><code data-lang="lowstruct">windir "C:\\Windows" .
+share "\\\\server\\share" .</code></pre><p><code>"C:\temp"</code> is not an error — <code>\t</code> is the tab escape — but it is not the path you meant. Always double the backslash.</p><h3 id="multi-line-and-raw-text">Multi-line and raw text<a class="anchor" href="#multi-line-and-raw-text" aria-hidden="true">#</a></h3><p>A <code>text</code> heredoc keeps its body exactly as written, with no escapes. It ends at a line holding only its tag.</p><pre><code data-lang="lowstruct">banner text END
+Welcome.
+  Indentation and \backslashes stay as they are.
+END
+.</code></pre><p>The line break after the last body line is not part of the value. The heredoc is a value like any other, so the statement still ends with a full stop.</p><h3 id="byte-strings-and-prefixes">Byte strings and prefixes<a class="anchor" href="#byte-strings-and-prefixes" aria-hidden="true">#</a></h3><p>A plain <code>"…"</code> holds <strong>bytes</strong>: <code>"\xE9"</code> is one byte that is not valid UTF-8. The libraries give you the bytes and a helper that decodes UTF-8 text. Two prefixes change what a string holds:</p><div class="tblwrap"><table><tr><td><strong>Literal</strong></td><td><strong>Elements</strong></td></tr><tr><td><code>"é"</code></td><td>bytes (2)</td></tr><tr><td><code>u"é"</code></td><td>UTF-16 code units (1)</td></tr><tr><td><code>U"é"</code></td><td>code points (1)</td></tr></table></div><p>Character literals such as <code>'a'</code>, <code>u'é'</code> and <code>U'😀'</code> hold exactly one element of the same kind.</p><h2 id="errors-you-will-meet">Errors you will meet<a class="anchor" href="#errors-you-will-meet" aria-hidden="true">#</a></h2><p>Every rejection names a line, a column (counted in characters) and a code.</p><div class="tblwrap"><table><tr><td><strong>Code</strong></td><td><strong>Typical cause</strong></td><td><strong>Fix</strong></td></tr><tr><td><code>E-LOWS-UNCLOSED</code></td><td>a missing <code>.</code>, <code>end</code>, closing quote, or heredoc tag</td><td>add it</td></tr><tr><td><code>E-LOWS-CHARSET</code></td><td><code>=</code>, <code>[</code>, <code>#</code>, <code>,</code> or a non-ASCII letter outside a string</td><td>lowstruct uses none of these</td></tr><tr><td><code>E-LOWS-ESCAPE</code></td><td><code>"\q"</code>, <code>"\101"</code> (no octal), a bad <code>\u</code></td><td>use one of the escapes above</td></tr><tr><td><code>E-LOWS-NUMBER</code></td><td><code>0x</code> with no digits, <code>0o7</code>, <code>1__0</code></td><td>write a complete number</td></tr><tr><td><code>E-LOWS-MIX</code></td><td><code>1 "one" .</code> or <code>1 2.0 .</code></td><td>one kind per statement</td></tr><tr><td><code>E-LOWS-ORDER</code></td><td><code>a 1 b 2 .</code></td><td>one statement per path</td></tr><tr><td><code>E-LOWS-DUP</code></td><td>the same key twice</td><td>write it once</td></tr><tr><td><code>E-LOWS-SHAPE</code></td><td><code>a 1 .</code> and also <code>a b 2 .</code></td><td>a key holds values or keys, not both</td></tr><tr><td><code>E-LOWS-SEALED</code></td><td>reopening a block, or adding to it from outside</td><td>keep a block's keys inside it</td></tr><tr><td><code>E-LOWS-TAG</code></td><td><code>text</code> or <code>note</code> used as a key, or a bad heredoc opening</td><td>rename the key</td></tr><tr><td><code>E-LOWS-BOM</code> · <code>E-LOWS-CR</code> · <code>E-LOWS-UTF8</code></td><td>the file's encoding</td><td>save as UTF-8 without BOM, LF or CRLF</td></tr></table></div><p>The complete list, with where each one points, is in the specification, section 5.</p>
+<div class="nav"><a href="index.html">← The manual</a><a href="python.html">Python library →</a></div>
+</div></main>
+</div>
+<script>(function(){var b=document.querySelector('.here-btn'),p=document.getElementById('here-panel');function open(o){if(!p)return;p.hidden=!o;if(b)b.setAttribute('aria-expanded',o);}if(b)b.addEventListener('click',function(){open(p.hidden);});if(p)p.addEventListener('click',function(e){if(e.target.tagName==='A'&&(e.target.getAttribute('href')||'').charAt(0)==='#')open(false);});document.addEventListener('keydown',function(e){if(e.key==='Escape')open(false);});var box=document.getElementById('setbox'),so=document.getElementById('set-open');if(!box||!so)return;var r=document.documentElement;function load(){try{return JSON.parse(localStorage.getItem('lows-read')||'{}');}catch(e){return {};}}function save(s){try{localStorage.setItem('lows-read',JSON.stringify(s));}catch(e){}}function css(n){return getComputedStyle(r).getPropertyValue(n).trim();}function hex(v){var m=v.match(/^rgba?\((\d+)[ ,]+(\d+)[ ,]+(\d+)/);if(!m)return v.charAt(0)==='#'?v:'#000000';return '#'+[1,2,3].map(function(i){return ('0'+parseInt(m[i],10).toString(16)).slice(-2);}).join('');}function paint(){var s=load();document.getElementById('s-width').checked=!!s.width;var t=s.theme||'auto';[].forEach.call(box.querySelectorAll('.segb'),function(x){x.setAttribute('aria-pressed',x.dataset.theme===t);});document.getElementById('s-fg').value=s.fg||hex(css('--fg'));document.getElementById('s-bg').value=s.bg||hex(css('--bg'));document.getElementById('s-link').value=s.link||hex(css('--link'));}so.addEventListener('click',function(){box.hidden=!box.hidden;so.setAttribute('aria-expanded',!box.hidden);if(!box.hidden)paint();});document.getElementById('s-width').addEventListener('change',function(){var s=load();s.width=this.checked;save(s);if(s.width)r.setAttribute('data-measure','on');else r.removeAttribute('data-measure');});[].forEach.call(box.querySelectorAll('.segb'),function(x){x.addEventListener('click',function(){var s=load();s.theme=x.dataset.theme;delete s.fg;delete s.bg;delete s.link;save(s);['--fg','--bg','--link'].forEach(function(n){r.style.removeProperty(n);});if(s.theme==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',s.theme);setTimeout(paint,0);});});[['s-fg','--fg','fg'],['s-bg','--bg','bg'],['s-link','--link','link']].forEach(function(a){document.getElementById(a[0]).addEventListener('input',function(){var s=load();s[a[2]]=this.value;save(s);r.style.setProperty(a[1],this.value);});});})();</script>
+<script>
+(function(){
+  var q=document.getElementById('q'), out=document.getElementById('qr');
+  if(!q||!out) return;
+  var data=null, NONE="Nothing found";
+  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+  function run(){
+    var v=q.value.trim().toLowerCase();
+    out.innerHTML='';
+    if(!v||!data) return;
+    var exact=[], starts=[], rest=[];
+    for(var i=0;i<data.length;i++){
+      var name=data[i][0].toLowerCase(), at=name.indexOf(v);
+      if(at<0) continue;
+      if(name===v) exact.push(data[i]);
+      else if(at===0) starts.push(data[i]);
+      else rest.push(data[i]);
+    }
+    var hits=exact.concat(starts,rest).slice(0,40);
+    if(!hits.length){ out.innerHTML='<li>'+NONE+'</li>'; return; }
+    out.innerHTML=hits.map(function(h){
+      var label=h[3]==='fn' ? '<code>'+esc(h[0])+'</code>' : esc(h[0]);
+      return '<li><a href="'+h[1]+'">'+label+'</a>'+
+             (h[2]?'<span class="where">'+esc(h[2])+'</span>':'')+'</li>';
+    }).join('');
+  }
+  q.addEventListener('input',function(){
+    if(data){ run(); return; }
+    fetch('search-index.json').then(function(r){return r.json();})
+      .then(function(j){ data=j; run(); })
+      .catch(function(){ out.innerHTML='<li>'+NONE+'</li>'; });
+  });
+})();
+</script>
+</body>
+</html>

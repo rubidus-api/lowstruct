@@ -1,0 +1,195 @@
+/*
+ * The published manual — one stylesheet for both languages and every page.
+ * Adapted from proven_c_lib (same author, MIT).
+ *
+ * The design follows proven_c_book (styles/book.css): the same three-state theme, the same
+ * palette and token colours, the same table and code treatment, and the same self-hosted
+ * subset fonts. Three things differ on purpose, because a manual is not a book:
+ *
+ *   - The body text is sans-serif. Half of this document is tables and code, which are
+ *     scanned rather than read line by line, and a screen-first reference reads better in
+ *     sans than in the book's serif.
+ *   - Paragraphs are not first-line indented. That is a print convention; here it fights
+ *     with the reference tables it sits between.
+ *   - A wide screen gets a contents sidebar. A reader of a reference arrives looking for one
+ *     function, and the fastest way to that is a list of chapters that is always visible.
+ *
+ * The colours are declared in all three states, which is the trap book.css documents: a
+ * palette that lives only inside `@media (prefers-color-scheme: dark)` leaves the "dark"
+ * button with no rule to answer, so pressing it does nothing.
+ */
+
+/* ── Fonts. Self-hosted subsets, built by scripts/make-webfonts.sh from the characters this
+   site actually uses. Without @font-face the CSS only *names* a font, and a visitor without
+   it falls back to something else — which is how a sibling project shipped two editions in
+   the wrong typeface. `font-display:swap` keeps text visible while they load. */
+@font-face { font-family:"LOWS Sans"; src:url("fonts/sans.woff2") format("woff2");
+  font-weight:400; font-style:normal; font-display:swap;
+  unicode-range:U+0000-024F,U+2000-206F,U+20A0-20BF,U+2100-21FF,U+2190-2BFF; }
+@font-face { font-family:"LOWS Sans"; src:url("fonts/sans-bold.woff2") format("woff2");
+  font-weight:700; font-style:normal; font-display:swap;
+  unicode-range:U+0000-024F,U+2000-206F,U+20A0-20BF,U+2100-21FF,U+2190-2BFF; }
+@font-face { font-family:"LOWS Sans"; src:url("fonts/sans-kr.woff2") format("woff2");
+  font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:"LOWS Sans"; src:url("fonts/sans-kr-bold.woff2") format("woff2");
+  font-weight:700; font-style:normal; font-display:swap; }
+@font-face { font-family:"LOWS Serif"; src:url("fonts/serif.woff2") format("woff2");
+  font-weight:400; font-style:normal; font-display:swap;
+  unicode-range:U+0000-024F,U+2000-206F,U+20A0-20BF,U+2100-21FF,U+2190-2BFF; }
+@font-face { font-family:"LOWS Serif"; src:url("fonts/serif-italic.woff2") format("woff2");
+  font-weight:400; font-style:italic; font-display:swap;
+  unicode-range:U+0000-024F,U+2000-206F,U+20A0-20BF,U+2100-21FF,U+2190-2BFF; }
+@font-face { font-family:"LOWS Mono"; src:url("fonts/mono.woff2") format("woff2");
+  font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:"LOWS Mono"; src:url("fonts/mono-bold.woff2") format("woff2");
+  font-weight:700; font-style:normal; font-display:swap; }
+
+/* ── Palette, in all three states: the light default, the system-dark case (unless the reader
+   chose light), and the explicitly chosen dark. Editing one means editing the other two. */
+:root { color-scheme: light dark; --fg:#141414; --bg:#ffffff; --muted:#5c5c5c;
+  --rule:#c9c9c9; --box-bg:#f6f6f6; --box-rule:#c4c4c4; --code-bg:#f7f7f8; --link:#1a4f8a;
+  --tok-c:#3f5b4a; --tok-k:#123c87; --tok-t:#0f5b63; --tok-s:#7a3b0a;
+  --tok-n:#8a2222; --tok-p:#6b2d8a; --tok-x:#555555; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --fg:#e8e8e8; --bg:#121314; --muted:#a6a6a6;
+    --rule:#3a3d40; --box-bg:#1c1e20; --box-rule:#4a4d50; --code-bg:#1b1d1f; --link:#8ab4e8;
+    --tok-c:#9fbfa8; --tok-k:#9fc0f0; --tok-t:#7fcbd4; --tok-s:#e0b080;
+    --tok-n:#e79a9a; --tok-p:#c79ae0; --tok-x:#a6a6a6; } }
+:root[data-theme="dark"] { color-scheme: dark; --fg:#e8e8e8; --bg:#121314; --muted:#a6a6a6;
+  --rule:#3a3d40; --box-bg:#1c1e20; --box-rule:#4a4d50; --code-bg:#1b1d1f; --link:#8ab4e8;
+  --tok-c:#9fbfa8; --tok-k:#9fc0f0; --tok-t:#7fcbd4; --tok-s:#e0b080;
+  --tok-n:#e79a9a; --tok-p:#c79ae0; --tok-x:#a6a6a6; }
+:root[data-theme="light"] { color-scheme: light; }
+
+* { box-sizing:border-box; }
+html { -webkit-text-size-adjust:100%; scroll-padding-top:4rem; }
+body { margin:0; background:var(--bg); color:var(--fg); line-height:1.72;
+  font-family:"LOWS Sans","Noto Sans CJK KR",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:17px; }
+
+/* Keyboard users get out of the navigation in one press. */
+.skip { position:absolute; left:-9999px; }
+.skip:focus { left:.6rem; top:.6rem; z-index:60; background:var(--bg); color:var(--link);
+  padding:.4rem .7rem; border:1px solid var(--rule); }
+
+/* ── The bar: the manual's name, where you are (a button that opens the panel), and the
+   three moves — previous, contents, next — so a long chapter does not have to be scrolled
+   to the bottom to leave it. */
+.bar { position:sticky; top:0; z-index:20; display:flex; flex-wrap:wrap; gap:.35rem .8rem;
+  align-items:center; padding:.5rem clamp(.7rem,3vw,1.6rem); background:var(--bg);
+  border-bottom:1px solid var(--rule); font-size:.86rem; }
+.bar a { color:var(--link); text-decoration:none; }
+.bar a:hover { text-decoration:underline; }
+.bar strong a { color:var(--fg); }
+.here-btn { font:inherit; color:var(--fg); cursor:pointer; background:none;
+  border:1px solid var(--rule); border-radius:.25rem; padding:.1rem .5rem; }
+.here-btn .caret { color:var(--muted); }
+.bar-nav { margin-left:auto; display:flex; gap:.5rem; }
+.bar-nav a, .bar-nav .off { display:inline-block; min-width:1.6rem; text-align:center;
+  border:1px solid var(--rule); border-radius:.25rem; padding:0 .3rem; }
+.bar-nav .off { color:var(--muted); opacity:.45; }
+
+.here-panel { position:sticky; top:2.6rem; z-index:19; background:var(--bg);
+  border-bottom:1px solid var(--rule); padding:.6rem clamp(.7rem,3vw,1.6rem) .9rem;
+  font-size:.9rem; }
+.tools { display:flex; flex-wrap:wrap; gap:.4rem .55rem; align-items:center;
+  padding-bottom:.5rem; border-bottom:1px solid var(--rule); }
+.tools .ver { color:var(--muted); font-family:"LOWS Mono",monospace; font-size:.82rem; }
+.tool { font:inherit; color:var(--link); cursor:pointer; text-decoration:none;
+  background:none; border:1px solid var(--rule); border-radius:.25rem; padding:.05rem .45rem; }
+.setbox { padding:.6rem 0; border-bottom:1px solid var(--rule); }
+.setrow { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:.35rem 0; }
+.setlbl { min-width:5.5rem; color:var(--muted); }
+.seg { display:inline-flex; }
+.segb { font:inherit; cursor:pointer; background:none; color:var(--fg);
+  border:1px solid var(--rule); padding:.05rem .5rem; }
+.segb[aria-pressed="true"] { background:var(--box-bg); font-weight:700; }
+.col { display:inline-flex; align-items:center; gap:.3rem; }
+.setnote { color:var(--muted); font-size:.85em; margin:.4rem 0 0; }
+.here-head { margin:.55rem 0 .25rem; color:var(--muted); }
+.here-body { display:grid; grid-template-columns:repeat(auto-fill,minmax(15rem,1fr)); gap:.05rem .8rem; }
+.here-body a { color:var(--fg); text-decoration:none; padding:.1rem 0; }
+.here-body a:hover { color:var(--link); text-decoration:underline; }
+
+/* ── Search. A reader of a reference arrives with a function name, so the index is every
+   public function and every heading; the answer is the page and section it is explained in. */
+.search { margin:.55rem 0 0; }
+.search input { font:inherit; width:min(28rem,100%); padding:.3rem .5rem;
+  border:1px solid var(--rule); border-radius:.25rem; background:var(--bg); color:var(--fg); }
+.search .hint { color:var(--muted); font-size:.82em; margin:.25rem 0 0; }
+#qr { list-style:none; margin:.4rem 0 0; padding:0; max-height:16rem; overflow-y:auto; }
+#qr li { margin:.1rem 0; }
+#qr code { font-size:.92em; }
+#qr .where { color:var(--muted); font-size:.85em; margin-left:.4rem; }
+
+/* ── The page. Chapters carry no side rail: the whole table of contents lives on the index,
+   and jumping about inside a chapter is what the panel above is for. */
+.page { display:block; }
+
+/* ── The index's table of contents: every chapter, and every section within it. */
+nav.contents { margin:2.4rem 0 0; }
+nav.contents h2 { font-size:1.05rem; margin:1.6rem 0 .3rem; border:0; padding:0; }
+nav.contents h2 a { text-decoration:none; }
+nav.contents ul { margin:.2rem 0 0; padding-left:1.1rem; columns:2; column-gap:2rem; }
+@media (max-width:52rem) { nav.contents ul { columns:1; } }
+nav.contents li { margin:.1rem 0; break-inside:avoid; }
+nav.contents li a { color:var(--fg); text-decoration:none; }
+nav.contents li a:hover { color:var(--link); text-decoration:underline; }
+main { flex:1; min-width:0; padding:1.4rem clamp(.9rem,3vw,2.4rem) 5rem; }
+:root[data-measure="on"] main .content { max-width:44rem; margin:0 auto; }
+
+h1,h2,h3,h4 { line-height:1.35; padding-bottom:.18rem; }
+h1 { font-size:clamp(1.5rem,3.4vw,2.05rem); margin:.2rem 0 .9rem; padding-bottom:.3rem;
+  border-bottom:2px solid var(--fg); }
+h2 { font-size:clamp(1.2rem,2.6vw,1.5rem); margin:2rem 0 .6rem; padding-bottom:.25rem;
+  border-bottom:1.5px solid var(--fg); }
+h3 { font-size:clamp(1.02rem,2vw,1.15rem); margin:1.5rem 0 .45rem;
+  padding-bottom:.15rem; border-bottom:1px solid var(--rule); }
+h4 { font-size:1rem; color:var(--muted); margin:1.2rem 0 .4rem; }
+p { margin:.85rem 0; }
+a { color:var(--link); }
+.anchor { color:var(--muted); text-decoration:none; opacity:0; padding-left:.35em; font-weight:400; }
+h1:hover .anchor, h2:hover .anchor, h3:hover .anchor, h4:hover .anchor { opacity:.7; }
+
+.masthead { font-size:.82rem; color:var(--muted); margin-bottom:.4rem;
+  font-family:"LOWS Mono",monospace; }
+
+pre,code,kbd { font-family:"LOWS Mono","D2Coding",ui-monospace,SFMono-Regular,Menlo,monospace; }
+code { font-size:.93em; }
+:not(pre) > code { background:var(--code-bg); padding:.1em .32em; border-radius:3px; }
+pre { background:var(--code-bg); border:1px solid var(--rule); border-radius:0;
+  padding:.85rem 1rem; overflow-x:auto; line-height:1.58; font-size:.9rem; margin:1.1rem 0; }
+pre code { background:none; padding:0; }
+/* Typst's syntax highlighting arrives as inline styles; the tokens below are what the book
+   uses when it re-colours them, and are kept so both projects read the same. */
+.tok-c { color:var(--tok-c); font-style:italic; }
+.tok-k { color:var(--tok-k); font-weight:700; }
+.tok-s { color:var(--tok-s); }
+.tok-n { color:var(--tok-n); }
+.tok-t { color:var(--tok-t); font-weight:700; }
+.tok-x { color:var(--tok-x); }
+.tok-p { color:var(--tok-p); }
+
+blockquote { margin:1.1rem 0; padding:.5rem .9rem; border-left:3px solid var(--box-rule);
+  background:var(--box-bg); color:var(--muted); }
+
+.tblwrap { overflow-x:auto; margin:1.1rem 0; }
+table { border-collapse:collapse; font-size:.93rem; width:auto; max-width:100%;
+  border:2px solid var(--fg); table-layout:auto; }
+th,td { border:1px solid var(--rule); padding:.4rem .6rem; text-align:left; vertical-align:top; }
+table tr:first-child td { background:rgba(128,128,128,.16); font-weight:700;
+  border-bottom:2px solid var(--fg); }
+ul,ol { padding-left:1.4rem; margin:.8rem 0; } li { margin:.25rem 0; }
+
+.nav { display:flex; justify-content:space-between; gap:1rem; margin:3.5rem 0 0;
+  padding-top:1rem; border-top:1px solid var(--rule); font-size:.92rem; }
+.nav a { text-decoration:none; }
+
+@media (max-width: 900px) {
+  .page { display:block; }
+  nav.toc { display:none; }
+}
+@media print {
+  .bar, .here-panel, nav.toc, .nav, .anchor { display:none; }
+  main { padding:0; }
+}

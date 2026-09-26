@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python 라이브러리 — lowstruct 매뉴얼</title>
+<link rel="stylesheet" href="manual.css">
+<script>(function(){try{var s=JSON.parse(localStorage.getItem('lows-read')||'{}');var r=document.documentElement;if(s.theme&&s.theme!=='auto')r.setAttribute('data-theme',s.theme);if(s.fg)r.style.setProperty('--fg',s.fg);if(s.bg)r.style.setProperty('--bg',s.bg);if(s.link)r.style.setProperty('--link',s.link);if(s.width)r.setAttribute('data-measure','on');}catch(e){}})();</script>
+</head>
+<body>
+<a class="skip" href="#content">본문으로 건너뛰기</a>
+<div class="bar"><strong><a href="index.html">lowstruct 매뉴얼</a></strong><button class="here-btn" type="button" aria-expanded="false" aria-controls="here-panel">Python 라이브러리 <span class="caret">▾</span></button><span class="bar-nav"><a href="guide.html" title="이전" aria-label="이전">←</a><a href="index.html" title="목차" aria-label="목차">↑</a><a href="javascript.html" title="다음" aria-label="다음">→</a></span></div>
+<div id="here-panel" class="here-panel" hidden><div class="tools"><span class="ver">0.0.1</span><button class="tool" type="button" id="set-open" aria-expanded="false">⚙ 설정</button><a class="tool" href="../en/python.html">English</a><a class="tool" href="https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-ko-manual.pdf">⤓ PDF</a><a class="tool" href="https://github.com/rubidus-api/lowstruct" title="이 프로젝트의 GitHub 저장소">⌥ 저장소</a><a class="tool" href="https://rubidus-api.github.io/" title="rubidus-api.github.io — 공개된 모든 프로젝트">⌂ 전체 사이트</a><a class="tool" href="https://github.com/rubidus-api" title="github.com/rubidus-api — 모든 저장소">≡ 저장소 목록</a></div><div class="setbox" id="setbox" hidden><label class="setrow"><input type="checkbox" id="s-width"><span>가로폭 제한</span></label><div class="setrow"><span class="setlbl">테마</span><span class="seg"><button type="button" class="segb" data-theme="auto">시스템</button><button type="button" class="segb" data-theme="light">밝게</button><button type="button" class="segb" data-theme="dark">어둡게</button></span></div><div class="setrow"><span class="setlbl">색</span><label class="col"><span>글자</span><input type="color" id="s-fg"></label><label class="col"><span>배경</span><input type="color" id="s-bg"></label><label class="col"><span>링크</span><input type="color" id="s-link"></label></div><p class="setnote">설정은 이 브라우저에만 저장됩니다.</p></div><div class="search"><label class="setlbl" for="q">검색</label> <input type="search" id="q" placeholder="C 함수나 제목으로 찾기" autocomplete="off"><p class="hint">C API 와 모든 제목에서 찾습니다 — 본문 전문은 아닙니다.</p><ul id="qr"></ul></div><div class="here-head"><strong>이 페이지 안에서</strong></div><div class="here-body"><a href="#설치">설치</a><a href="#파일-읽기">파일 읽기</a><a href="#나무">나무</a><a href="#오류">오류</a><a href="#그-밖의-이름">그 밖의 이름</a><a href="#테스트">테스트</a></div></div>
+<div class="page">
+<main id="content"><div class="content">
+<div class="masthead">0.0.1 · 마크다운 매뉴얼에서 생성됨</div>
+<h1 id="python-라이브러리">Python 라이브러리<a class="anchor" href="#python-라이브러리" aria-hidden="true">#</a></h1><p><a href="../en/python.html">English</a> · <strong>한국어</strong></p><blockquote>정본은 영문 매뉴얼이고, 이 문서는 그 번역입니다.</blockquote><p>순수 Python 이며 의존성이 없고, Python 3.10 이상에서 돕니다. 패키지는 <code>python/lowstruct/</code> 디렉터리입니다.</p><h2 id="설치">설치<a class="anchor" href="#설치" aria-hidden="true">#</a></h2><p><a href="https://github.com/rubidus-api/lowstruct/releases">릴리스</a>에서: <code>lowstruct-VERSION-python.zip</code> 을 풀고 <code>pip install ./lowstruct-VERSION-python</code> (또는 그 폴더를 <code>PYTHONPATH</code> 에 넣습니다). PyPI 에는 아직 올리지 않았습니다.</p><p>저장소를 받은 뒤:</p><pre><code data-lang="sh"><span style="color: #4b69c6">pip</span> install ./python</code></pre><p>또는 <code>python/</code> 을 <code>PYTHONPATH</code> 에 넣습니다.</p><h2 id="파일-읽기">파일 읽기<a class="anchor" href="#파일-읽기" aria-hidden="true">#</a></h2><pre><code data-lang="python"><span style="color: #d73948">import</span> lowstruct
+
+doc <span style="color: #d73948">=</span> lowstruct.<span style="color: #4b69c6">loads</span>(<span style="color: #d73948">b</span><span style="color: #198810">'''</span>
+<span style="color: #198810">server do</span>
+<span style="color: #198810">  host "0.0.0.0" .</span>
+<span style="color: #198810">  port 8080 .</span>
+<span style="color: #198810">  tags "a" "b" .</span>
+<span style="color: #198810">end</span>
+<span style="color: #198810">'''</span>)
+
+port <span style="color: #d73948">=</span> doc.<span style="color: #4b69c6">get</span>(<span style="color: #198810">"</span><span style="color: #198810">server port</span><span style="color: #198810">"</span>).<span style="color: #4b69c6">one</span>()          <span style="color: #74747c">#</span><span style="color: #74747c"> 8080</span>
+host <span style="color: #d73948">=</span> doc.<span style="color: #4b69c6">get</span>((<span style="color: #198810">"</span><span style="color: #198810">server</span><span style="color: #198810">"</span>, <span style="color: #198810">"</span><span style="color: #198810">host</span><span style="color: #198810">"</span>)).<span style="color: #4b69c6">text</span>()     <span style="color: #74747c">#</span><span style="color: #74747c"> "0.0.0.0"</span>
+tags <span style="color: #d73948">=</span> [t.<span style="color: #4b69c6">decode</span>() <span style="color: #d73948">for</span> t <span style="color: #d73948">in</span> doc.<span style="color: #4b69c6">get</span>(<span style="color: #198810">"</span><span style="color: #198810">server tags</span><span style="color: #198810">"</span>).values]   <span style="color: #74747c">#</span><span style="color: #74747c"> ["a", "b"]</span>
+<span style="color: #4b69c6">print</span>(port, host, tags)</code></pre><p><code>loads()</code> 는 <code>str</code> 이나 UTF-8 <code>bytes</code> 를 받고, <code>load(fp)</code> 는 어느 모드로 연 파일 객체든 읽습니다. 되도록 바이트를 넘기십시오. 그래야 잘못된 UTF-8 이 위치와 함께 <code>E-LOWS-UTF8</code> 로 보고됩니다.</p><h2 id="나무">나무<a class="anchor" href="#나무" aria-hidden="true">#</a></h2><ul><li><strong>가지</strong>는 <code>dict</code> 를 이은 <code>lowstruct.Branch</code> 입니다. 키는 이름이고 소스 순서를 지킵니다. <code>branch.get(path, default=None)</code> 은 <code>"a b c"</code>, <code>("a", "b", "c")</code>, 또는 이름 하나로 준 경로를 따라갑니다.</li><li><strong>잎</strong>은 <code>kind</code> 와 <code>values</code> 를 가진 <code>lowstruct.Leaf</code> 입니다.</li></ul><div class="tblwrap"><table><tr><td><strong><code>kind</code></strong></td><td><strong>Python 값</strong></td></tr><tr><td><code>int</code></td><td><code>int</code></td></tr><tr><td><code>float</code></td><td><code>float</code></td></tr><tr><td><code>bool</code></td><td><code>bool</code></td></tr><tr><td><code>str</code></td><td><code>bytes</code> (바이트 문자열, UTF-8 이 아닐 수 있음)</td></tr><tr><td><code>u_str</code> · <code>U_str</code></td><td>UTF-16 코드 유닛 · 코드포인트의 <code>list</code></td></tr><tr><td><code>char</code> · <code>u_char</code> · <code>U_char</code></td><td><code>int</code></td></tr><tr><td><code>empty</code></td><td>값 없음(<code>key .</code>)</td></tr></table></div><ul><li><code>Leaf.one()</code> 은 값 하나를 돌려주고, 값이 정확히 하나가 아니면 <code>LookupError</code> 를 냅니다.</li><li><code>Leaf.text()</code> 는 문자열 값 하나를 <code>str</code> 로 돌려줍니다. <code>str</code> 종류는 엄격한 UTF-8 로, <code>u_str</code>·<code>U_str</code> 는 원소를 풀어서 만듭니다.</li></ul><pre><code data-lang="python"><span style="color: #d73948">import</span> lowstruct
+
+doc <span style="color: #d73948">=</span> lowstruct.<span style="color: #4b69c6">loads</span>(<span style="color: #198810">'</span><span style="color: #198810">remote origin do</span><span style="color: #1d6c76">\n</span><span style="color: #198810">  url "https://example.invalid/r.git" .</span><span style="color: #1d6c76">\n</span><span style="color: #198810">end</span><span style="color: #1d6c76">\n</span><span style="color: #198810">'</span>)
+<span style="color: #d73948">for</span> name, remote <span style="color: #d73948">in</span> doc[<span style="color: #198810">"</span><span style="color: #198810">remote</span><span style="color: #198810">"</span>].<span style="color: #4b69c6">items</span>():
+    <span style="color: #4b69c6">print</span>(name, remote.<span style="color: #4b69c6">get</span>(<span style="color: #198810">"</span><span style="color: #198810">url</span><span style="color: #198810">"</span>).<span style="color: #4b69c6">text</span>())</code></pre><h2 id="오류">오류<a class="anchor" href="#오류" aria-hidden="true">#</a></h2><p>lowstruct 가 아닌 문서는 <code>ValueError</code> 를 이은 <code>lowstruct.LowsError</code> 를 냅니다. <code>line</code>, <code>col</code>(코드포인트 단위), <code>code</code>(<code>E-LOWS-…</code>, 바뀌지 않음), <code>msg</code>(바뀔 수 있음)를 가집니다.</p><pre><code data-lang="python"><span style="color: #d73948">import</span> lowstruct
+
+<span style="color: #d73948">try</span>:
+    lowstruct.<span style="color: #4b69c6">loads</span>(<span style="color: #198810">'</span><span style="color: #198810">port 80 "x" .</span><span style="color: #1d6c76">\n</span><span style="color: #198810">'</span>)
+<span style="color: #d73948">except</span> lowstruct.LowsError <span style="color: #d73948">as</span> e:
+    <span style="color: #4b69c6">print</span>(e.line, e.col, e.code)   <span style="color: #74747c">#</span><span style="color: #74747c"> 1 1 E-LOWS-MIX</span></code></pre><h2 id="그-밖의-이름">그 밖의 이름<a class="anchor" href="#그-밖의-이름" aria-hidden="true">#</a></h2><ul><li><code>lowstruct.dumps_canonical(doc)</code> — 정규 덤프(명세 부록 C).</li><li><code>lowstruct.KINDS</code>, <code>lowstruct.MAX_DEPTH</code>(64), <code>lowstruct.__version__</code>.</li></ul><h2 id="테스트">테스트<a class="anchor" href="#테스트" aria-hidden="true">#</a></h2><p>저장소 루트에서: <code>python3 -m unittest discover -s python/tests</code></p>
+<div class="nav"><a href="guide.html">← lowstruct 파일 쓰기</a><a href="javascript.html">Node.js 라이브러리 →</a></div>
+</div></main>
+</div>
+<script>(function(){var b=document.querySelector('.here-btn'),p=document.getElementById('here-panel');function open(o){if(!p)return;p.hidden=!o;if(b)b.setAttribute('aria-expanded',o);}if(b)b.addEventListener('click',function(){open(p.hidden);});if(p)p.addEventListener('click',function(e){if(e.target.tagName==='A'&&(e.target.getAttribute('href')||'').charAt(0)==='#')open(false);});document.addEventListener('keydown',function(e){if(e.key==='Escape')open(false);});var box=document.getElementById('setbox'),so=document.getElementById('set-open');if(!box||!so)return;var r=document.documentElement;function load(){try{return JSON.parse(localStorage.getItem('lows-read')||'{}');}catch(e){return {};}}function save(s){try{localStorage.setItem('lows-read',JSON.stringify(s));}catch(e){}}function css(n){return getComputedStyle(r).getPropertyValue(n).trim();}function hex(v){var m=v.match(/^rgba?\((\d+)[ ,]+(\d+)[ ,]+(\d+)/);if(!m)return v.charAt(0)==='#'?v:'#000000';return '#'+[1,2,3].map(function(i){return ('0'+parseInt(m[i],10).toString(16)).slice(-2);}).join('');}function paint(){var s=load();document.getElementById('s-width').checked=!!s.width;var t=s.theme||'auto';[].forEach.call(box.querySelectorAll('.segb'),function(x){x.setAttribute('aria-pressed',x.dataset.theme===t);});document.getElementById('s-fg').value=s.fg||hex(css('--fg'));document.getElementById('s-bg').value=s.bg||hex(css('--bg'));document.getElementById('s-link').value=s.link||hex(css('--link'));}so.addEventListener('click',function(){box.hidden=!box.hidden;so.setAttribute('aria-expanded',!box.hidden);if(!box.hidden)paint();});document.getElementById('s-width').addEventListener('change',function(){var s=load();s.width=this.checked;save(s);if(s.width)r.setAttribute('data-measure','on');else r.removeAttribute('data-measure');});[].forEach.call(box.querySelectorAll('.segb'),function(x){x.addEventListener('click',function(){var s=load();s.theme=x.dataset.theme;delete s.fg;delete s.bg;delete s.link;save(s);['--fg','--bg','--link'].forEach(function(n){r.style.removeProperty(n);});if(s.theme==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',s.theme);setTimeout(paint,0);});});[['s-fg','--fg','fg'],['s-bg','--bg','bg'],['s-link','--link','link']].forEach(function(a){document.getElementById(a[0]).addEventListener('input',function(){var s=load();s[a[2]]=this.value;save(s);r.style.setProperty(a[1],this.value);});});})();</script>
+<script>
+(function(){
+  var q=document.getElementById('q'), out=document.getElementById('qr');
+  if(!q||!out) return;
+  var data=null, NONE="\ucc3e\uc740 \uac83\uc774 \uc5c6\uc2b5\ub2c8\ub2e4";
+  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+  function run(){
+    var v=q.value.trim().toLowerCase();
+    out.innerHTML='';
+    if(!v||!data) return;
+    var exact=[], starts=[], rest=[];
+    for(var i=0;i<data.length;i++){
+      var name=data[i][0].toLowerCase(), at=name.indexOf(v);
+      if(at<0) continue;
+      if(name===v) exact.push(data[i]);
+      else if(at===0) starts.push(data[i]);
+      else rest.push(data[i]);
+    }
+    var hits=exact.concat(starts,rest).slice(0,40);
+    if(!hits.length){ out.innerHTML='<li>'+NONE+'</li>'; return; }
+    out.innerHTML=hits.map(function(h){
+      var label=h[3]==='fn' ? '<code>'+esc(h[0])+'</code>' : esc(h[0]);
+      return '<li><a href="'+h[1]+'">'+label+'</a>'+
+             (h[2]?'<span class="where">'+esc(h[2])+'</span>':'')+'</li>';
+    }).join('');
+  }
+  q.addEventListener('input',function(){
+    if(data){ run(); return; }
+    fetch('search-index.json').then(function(r){return r.json();})
+      .then(function(j){ data=j; run(); })
+      .catch(function(){ out.innerHTML='<li>'+NONE+'</li>'; });
+  });
+})();
+</script>
+</body>
+</html>

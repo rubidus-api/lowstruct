@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lowstruct — manual</title>
+<link rel="stylesheet" href="en/manual.css">
+<style>
+/* Landing-page only: two editions on one page, each a full table of contents. */
+.edition { margin-top:2.6rem; }
+.edition-title { display:flex; flex-wrap:wrap; align-items:baseline; gap:.4rem 1.2rem; }
+.edition-links { font-size:.85rem; font-weight:normal; }
+.switch { margin:.2rem 0 0; color:var(--muted); }
+nav.contents { margin-top:1.2rem; }
+</style>
+</head>
+<body>
+<div class="page"><main id="content"><div class="content">
+<h1>lowstruct</h1>
+<div class="masthead">0.0.1 · a small, strict configuration file format — the manual and the specification, generated from the Markdown sources in the repository</div>
+<p class="switch"><a href="#en">English</a> · <a href="#ko">한국어</a></p>
+<section class="edition" id="en" lang="en"><h2 class="edition-title">English<span class="edition-links"><a href="en/index.html">Read the English manual</a> · <a href="https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-en-manual.pdf">PDF</a></span></h2>
+<nav class="contents" aria-label="English — Contents">
+<h2><a href="en/index.html">The manual</a></h2>
+<h2><a href="en/guide.html">Writing lowstruct files</a></h2>
+<ul>
+<li><a href="en/guide.html#statements">Statements</a></li>
+<li><a href="en/guide.html#blocks">Blocks</a></li>
+<li><a href="en/guide.html#lists">Lists</a></li>
+<li><a href="en/guide.html#comments">Comments</a></li>
+<li><a href="en/guide.html#numbers">Numbers</a></li>
+<li><a href="en/guide.html#strings">Strings</a></li>
+<li><a href="en/guide.html#errors-you-will-meet">Errors you will meet</a></li>
+</ul>
+<h2><a href="en/python.html">Python library</a></h2>
+<ul>
+<li><a href="en/python.html#install">Install</a></li>
+<li><a href="en/python.html#read-a-file">Read a file</a></li>
+<li><a href="en/python.html#the-tree">The tree</a></li>
+<li><a href="en/python.html#errors">Errors</a></li>
+<li><a href="en/python.html#other-names">Other names</a></li>
+<li><a href="en/python.html#tests">Tests</a></li>
+</ul>
+<h2><a href="en/javascript.html">Node.js library</a></h2>
+<ul>
+<li><a href="en/javascript.html#install">Install</a></li>
+<li><a href="en/javascript.html#read-a-file">Read a file</a></li>
+<li><a href="en/javascript.html#the-tree">The tree</a></li>
+<li><a href="en/javascript.html#errors">Errors</a></li>
+<li><a href="en/javascript.html#other-exports">Other exports</a></li>
+<li><a href="en/javascript.html#tests">Tests</a></li>
+</ul>
+<h2><a href="en/c.html">C library</a></h2>
+<ul>
+<li><a href="en/c.html#prebuilt-libraries">Prebuilt libraries</a></li>
+<li><a href="en/c.html#linking">Linking</a></li>
+<li><a href="en/c.html#building-from-source">Building from source</a></li>
+<li><a href="en/c.html#read-a-file">Read a file</a></li>
+<li><a href="en/c.html#parsing">Parsing</a></li>
+<li><a href="en/c.html#the-tree">The tree</a></li>
+<li><a href="en/c.html#single-value-accessors">Single-value accessors</a></li>
+<li><a href="en/c.html#memory">Memory</a></li>
+<li><a href="en/c.html#other-functions">Other functions</a></li>
+</ul>
+<h2><a href="en/implementers.html">For implementers</a></h2>
+<ul>
+<li><a href="en/implementers.html#the-conformance-suite">The conformance suite</a></li>
+<li><a href="en/implementers.html#the-canonical-dump">The canonical dump</a></li>
+<li><a href="en/implementers.html#running-everything">Running everything</a></li>
+<li><a href="en/implementers.html#the-differential-fuzz">The differential fuzz</a></li>
+<li><a href="en/implementers.html#making-a-release">Making a release</a></li>
+<li><a href="en/implementers.html#adding-a-rule-or-fixing-a-bug">Adding a rule or fixing a bug</a></li>
+<li><a href="en/implementers.html#writing-a-fourth-implementation">Writing a fourth implementation</a></li>
+</ul>
+<h2><a href="en/spec.html">Specification</a></h2>
+<ul>
+<li><a href="en/spec.html#1-overview">1. Overview</a></li>
+<li><a href="en/spec.html#2-the-file">2. The File</a></li>
+<li><a href="en/spec.html#3-lexical-structure">3. Lexical Structure</a></li>
+<li><a href="en/spec.html#4-statements-and-the-data-model">4. Statements and the Data Model</a></li>
+<li><a href="en/spec.html#5-diagnostics">5. Diagnostics</a></li>
+<li><a href="en/spec.html#6-how-the-implementations-present-values-note">6. How the Implementations Present Values (Note)</a></li>
+<li><a href="en/spec.html#annex-a-relationship-to-lowent">Annex A. Relationship to Lowent</a></li>
+<li><a href="en/spec.html#annex-b-conformance">Annex B. Conformance</a></li>
+<li><a href="en/spec.html#annex-c-canonical-dump">Annex C. Canonical Dump</a></li>
+<li><a href="en/spec.html#annex-d-deferred-to-a-later-version">Annex D. Deferred to a Later Version</a></li>
+</ul>
+</nav>
+</section>
+<section class="edition" id="ko" lang="ko"><h2 class="edition-title">한국어<span class="edition-links"><a href="ko/index.html">한국어 매뉴얼 읽기</a> · <a href="https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-ko-manual.pdf">PDF</a></span></h2>
+<nav class="contents" aria-label="한국어 — 목차">
+<h2><a href="ko/index.html">매뉴얼</a></h2>
+<h2><a href="ko/guide.html">lowstruct 파일 쓰기</a></h2>
+<ul>
+<li><a href="ko/guide.html#문장">문장</a></li>
+<li><a href="ko/guide.html#블록">블록</a></li>
+<li><a href="ko/guide.html#목록">목록</a></li>
+<li><a href="ko/guide.html#주석">주석</a></li>
+<li><a href="ko/guide.html#수">수</a></li>
+<li><a href="ko/guide.html#문자열">문자열</a></li>
+<li><a href="ko/guide.html#만나게-될-오류">만나게 될 오류</a></li>
+</ul>
+<h2><a href="ko/python.html">Python 라이브러리</a></h2>
+<ul>
+<li><a href="ko/python.html#설치">설치</a></li>
+<li><a href="ko/python.html#파일-읽기">파일 읽기</a></li>
+<li><a href="ko/python.html#나무">나무</a></li>
+<li><a href="ko/python.html#오류">오류</a></li>
+<li><a href="ko/python.html#그-밖의-이름">그 밖의 이름</a></li>
+<li><a href="ko/python.html#테스트">테스트</a></li>
+</ul>
+<h2><a href="ko/javascript.html">Node.js 라이브러리</a></h2>
+<ul>
+<li><a href="ko/javascript.html#설치">설치</a></li>
+<li><a href="ko/javascript.html#파일-읽기">파일 읽기</a></li>
+<li><a href="ko/javascript.html#나무">나무</a></li>
+<li><a href="ko/javascript.html#오류">오류</a></li>
+<li><a href="ko/javascript.html#그-밖에-내보내는-것">그 밖에 내보내는 것</a></li>
+<li><a href="ko/javascript.html#테스트">테스트</a></li>
+</ul>
+<h2><a href="ko/c.html">C 라이브러리</a></h2>
+<ul>
+<li><a href="ko/c.html#미리-지은-라이브러리">미리 지은 라이브러리</a></li>
+<li><a href="ko/c.html#링크">링크</a></li>
+<li><a href="ko/c.html#소스에서-빌드">소스에서 빌드</a></li>
+<li><a href="ko/c.html#파일-읽기">파일 읽기</a></li>
+<li><a href="ko/c.html#파싱">파싱</a></li>
+<li><a href="ko/c.html#나무">나무</a></li>
+<li><a href="ko/c.html#값-하나를-읽는-함수">값 하나를 읽는 함수</a></li>
+<li><a href="ko/c.html#메모리">메모리</a></li>
+<li><a href="ko/c.html#그-밖의-함수">그 밖의 함수</a></li>
+</ul>
+<h2><a href="ko/implementers.html">구현하는 사람을 위해</a></h2>
+<ul>
+<li><a href="ko/implementers.html#적합성-사례">적합성 사례</a></li>
+<li><a href="ko/implementers.html#정규-덤프">정규 덤프</a></li>
+<li><a href="ko/implementers.html#모두-돌리기">모두 돌리기</a></li>
+<li><a href="ko/implementers.html#차분-퍼즈">차분 퍼즈</a></li>
+<li><a href="ko/implementers.html#릴리스-만들기">릴리스 만들기</a></li>
+<li><a href="ko/implementers.html#규칙을-더하거나-결함을-고칠-때">규칙을 더하거나 결함을 고칠 때</a></li>
+<li><a href="ko/implementers.html#네-번째-구현을-쓸-때">네 번째 구현을 쓸 때</a></li>
+</ul>
+<h2><a href="ko/spec.html">명세</a></h2>
+<ul>
+<li><a href="ko/spec.html#1-개요">1. 개요</a></li>
+<li><a href="ko/spec.html#2-파일">2. 파일</a></li>
+<li><a href="ko/spec.html#3-어휘">3. 어휘</a></li>
+<li><a href="ko/spec.html#4-문장과-데이터-모델">4. 문장과 데이터 모델</a></li>
+<li><a href="ko/spec.html#5-진단">5. 진단</a></li>
+<li><a href="ko/spec.html#6-구현이-값을-보이는-모양-참고">6. 구현이 값을 보이는 모양 (참고)</a></li>
+<li><a href="ko/spec.html#부록-a-로우엔트와의-관계">부록 A. 로우엔트와의 관계</a></li>
+<li><a href="ko/spec.html#부록-b-적합성">부록 B. 적합성</a></li>
+<li><a href="ko/spec.html#부록-c-정규-덤프">부록 C. 정규 덤프</a></li>
+<li><a href="ko/spec.html#부록-d-다음-판으로-미룬-것">부록 D. 다음 판으로 미룬 것</a></li>
+</ul>
+</nav>
+</section>
+</div></main></div>
+</body>
+</html>
