@@ -1,10 +1,8 @@
+**한국어** | [English](README.md) — **lowstruct v0.0.1** — [TAR.GZ(Linux x64)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-linux-x86_64.tar.gz) · [ZIP(Node.js)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-node.zip) · [ZIP(Python)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-python.zip) · [ZIP(Windows x64)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-windows-x86_64.zip) · [PDF(en)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-en-manual.pdf) · [PDF(ko)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-ko-manual.pdf)
+
 # lowstruct
 
-**lowstruct v0.0.1** — [Node.js·Python 설치 팩, C 라이브러리](https://github.com/rubidus-api/lowstruct/releases/tag/v0.0.1) · C 라이브러리: [Linux x86_64 (.tar.gz)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-linux-x86_64.tar.gz) · [Windows x86_64 (.zip)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-windows-x86_64.zip) · [모든 판](https://github.com/rubidus-api/lowstruct/releases)
-
 **웹에서 읽기** — [English](https://rubidus-api.github.io/lowstruct/en/) · [한국어](https://rubidus-api.github.io/lowstruct/ko/) · 매뉴얼과 명세
-
-[English](README.md) · **한국어**
 
 작고 엄격한 설정 파일 형식(`.lows`)과, 하나의 적합성 사례를 함께 통과하는 독립된 파서 셋 — **C**, **Node.js**,
 **Python** — 입니다.

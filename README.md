@@ -1,10 +1,8 @@
+[한국어](README-ko.md) | **English** — **lowstruct v0.0.1** — [TAR.GZ(Linux x64)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-linux-x86_64.tar.gz) · [ZIP(Node.js)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-node.zip) · [ZIP(Python)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-python.zip) · [ZIP(Windows x64)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-windows-x86_64.zip) · [PDF(en)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-en-manual.pdf) · [PDF(ko)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-ko-manual.pdf)
+
 # lowstruct
 
-**lowstruct v0.0.1** — [Node.js and Python install packs, C library](https://github.com/rubidus-api/lowstruct/releases/tag/v0.0.1) · C library: [Linux x86_64 (.tar.gz)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-linux-x86_64.tar.gz) · [Windows x86_64 (.zip)](https://github.com/rubidus-api/lowstruct/releases/download/v0.0.1/lowstruct-0.0.1-windows-x86_64.zip) · [all releases](https://github.com/rubidus-api/lowstruct/releases)
-
 **Read on the web** — [English](https://rubidus-api.github.io/lowstruct/en/) · [한국어](https://rubidus-api.github.io/lowstruct/ko/) · manual and specification
-
-**English** · [한국어](README-ko.md)
 
 A small, strict configuration file format (`.lows`), with three independent parsers — **C**, **Node.js** and
 **Python** — held to one conformance suite.
